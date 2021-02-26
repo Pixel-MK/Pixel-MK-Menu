@@ -1,0 +1,27 @@
+package com.pixelmkmenu.pixelmkmenu;
+
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+
+public class PrivateClasses<C> {
+
+	public final Class<? extends C> Class;
+
+	private final String className;
+
+	private PrivateClasses(ObfuscationMapping mapping) {
+		this.className = mapping.getName();
+		Class<? extends C> reflectedClass = null;
+		try {
+			reflectedClass = (Class)Class.forName(this.className);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} 
+		this.Class = reflectedClass;
+	}
+
+	public static final PrivateClasses<Slot> SlotCreativeInventory = new PrivateClasses(ObfuscationMapping.SlotCreativeInventory);
+
+	public static final PrivateClasses<Container> ContainerCreative = new PrivateClasses(ObfuscationMapping.ContainerCreative);
+
+}
