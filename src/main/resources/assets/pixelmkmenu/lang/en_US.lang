@@ -1,0 +1,28 @@
+option.ui.title=User Interface Settings
+option.ui.rponmenu=Show "Resource Packs" button on main menu
+option.ui.fancyingame=Use fancy in-game menu
+option.ui.fancyrespacks=Use fancy "Resource Packs" GUI
+option.ui.transitions=Enable menu transitions
+option.ui.randomtrans=Random transition
+option.ui.himotiontrans=Include high-motion transitions
+
+transition.fadebasic=Fade
+transition.fadegrow=Fade Grow
+transition.fadedrop=Fade Drop
+transition.fadeslide=Fade Slide
+transition.drop=Drop
+transition.slide=Slide
+transition.tiles1=Tiles
+transition.tiles2=Tiles 2
+transition.rotate=Rotate
+transition.blinds=Blinds
+transition.ripple=Ripple
+transition.spiral=Spiral
+
+dialog.favourite.title=Define Preferred Server
+dialog.favourite.pick=Pick...
+dialog.favourite.prompt=Enter the details for your preferred server:
+dialog.favourite.servername=Server Name
+dialog.favourite.serveraddress=Server Address
+
+menu.ingame.title=Game Menu

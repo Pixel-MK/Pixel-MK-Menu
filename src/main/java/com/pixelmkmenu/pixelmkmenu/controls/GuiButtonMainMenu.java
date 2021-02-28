@@ -135,10 +135,10 @@ public class GuiButtonMainMenu extends GuiButton{
 	    GL11.glDisable(3553);
 	    GL11.glBlendFunc(770, 771);
 	    GL11.glColor4f(var6, var7, var8, var10);
-		BufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
-		BufferBuilder.pos(x1 + offset, y2, 0.0d).endVertex();
+		BufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		BufferBuilder.pos((x1 + offset), y2, 0.0d).endVertex();
 		BufferBuilder.pos(x2, y2, 0.0d).endVertex();
-		BufferBuilder.pos(x2 - offset, y1, 0.0d).endVertex();
+		BufferBuilder.pos((x2 - offset), y1, 0.0d).endVertex();
 		BufferBuilder.pos(x1, y1, 0.0d).endVertex();
 		tessellator.draw();
 		GL11.glEnable(3553);

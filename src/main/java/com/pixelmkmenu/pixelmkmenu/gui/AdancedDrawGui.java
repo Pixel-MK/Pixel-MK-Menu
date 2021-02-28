@@ -48,7 +48,7 @@ public abstract class AdancedDrawGui extends GuiScreen implements IAdvancedDrawG
 	public void drawTexturedModalRect(int x, int y, int x2, int y2, int u, int v, int u2, int v2) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
-		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bb.pos(x, y2, this.zLevel).tex((u * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y2, this.zLevel).tex((u2 * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y, this.zLevel).tex((u2 * texMapScale), (v * texMapScale)).endVertex();
@@ -77,7 +77,7 @@ public abstract class AdancedDrawGui extends GuiScreen implements IAdvancedDrawG
 		GL11.glDisable(3553);
 		GL11.glBlendFunc(770, 771);
 		GL11.glColor4f(red, green, blue, alpha);
-		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 		bb.pos(x1, y2, this.zLevel).endVertex();
 		bb.pos(x2, y2, this.zLevel).endVertex();
 		bb.pos(x2, y1, this.zLevel).endVertex();

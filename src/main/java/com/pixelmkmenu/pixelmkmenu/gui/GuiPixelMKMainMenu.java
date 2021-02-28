@@ -291,7 +291,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		drawRect(mouseX + 14, mouseY, mouseX + xSize, mouseY + ySize, 1610612736);
 		GL11.glEnable(3042);
 		GL11.glDisable(3553);
-		bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
 		bb.pos((mouseX + 14), (mouseY + ySize), 0.0d).endVertex();
 		bb.pos((mouseX+14), mouseY, 0.0d).endVertex();
 		bb.pos(mouseX, (mouseY + yOffset), 0.0d).endVertex();
@@ -329,10 +329,8 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		}
 		//Modpack branding in top left
 		drawString(this.fontRenderer, "Pixel MK Modpack", 2, 2, 16777215);
-		if(mouseX < 88 && mouseY < 2 + 16) {
-			drawToolTip(80, 2+16+2, -40, 200, 16, (String)null);
-			int top = 12+13;
-			drawString(this.fontRenderer, ModpackText, 100, top, -1);
+		if(mouseX < 87 && mouseY < 9) {
+			drawToolTip(mouseX+4, mouseY+13, -7, 200, 16, ModpackText);
 		}
 	}
 	
@@ -341,16 +339,11 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		customScreenClasses.add(new CustomScreenEntry(panelName, customScreenClass, customScreenText));
 	}
 	
-	@Deprecated
-	public static void registerCustomScreen(Class<? extends GuiScreen> customScreenClass, String customScreenText) {
-		registerCustomScreen("right", customScreenClass, customScreenText);
-	}
-	
 	public void drawTexturedModalRect(int x, int y, int x2, int y2, int u, int v, int u2, int v2) {
 		float texMapScale = 9.765625E-4f;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
-		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bb.pos(x, y2, 0.0d).tex((u * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y2, 0.0d).tex((u2 * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y, 0.0d).tex((u2 * texMapScale), (v * texMapScale)).endVertex();
