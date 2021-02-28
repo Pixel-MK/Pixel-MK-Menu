@@ -4,19 +4,14 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
-
-import org.apache.commons.logging.Log;
 import org.lwjgl.opengl.GL11;
 
 import com.pixelmkmenu.pixelmkmenu.CustomScreenEntry;
 import com.pixelmkmenu.pixelmkmenu.ForgeHandler;
 import com.pixelmkmenu.pixelmkmenu.ObfuscationMapping;
-import com.pixelmkmenu.pixelmkmenu.PixelMKMenuConfig;
 import com.pixelmkmenu.pixelmkmenu.PixelMKMenuCore;
 import com.pixelmkmenu.pixelmkmenu.PrivateMethods;
 import com.pixelmkmenu.pixelmkmenu.ThreadMainMenuInfo;
@@ -79,6 +74,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	private List<GuiButtonCustomScreen> customScreenButtons = new ArrayList<GuiButtonCustomScreen>();
 	
 	private String modPackText;
+	private String ModpackText = "Pixel MK modpack version 3.0.0.1";
 	private String versionText;
 	private String favouriteServerName;
 	private String favouriteServerIP;
@@ -330,6 +326,13 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 				drawString(this.fontRenderer, brand, 100, top, -1);
 				top += 10;
 			}
+		}
+		//Modpack branding in top left
+		drawString(this.fontRenderer, "Pixel MK Modpack", 2, 2, 16777215);
+		if(mouseX < 88 && mouseY < 2 + 16) {
+			drawToolTip(80, 2+16+2, -40, 200, 16, (String)null);
+			int top = 12+13;
+			drawString(this.fontRenderer, ModpackText, 100, top, -1);
 		}
 	}
 	

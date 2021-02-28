@@ -29,11 +29,11 @@ public class GuiButtonPanel extends GuiButton{
 			int width, int height, int buttonSpacing, int containerWidth, int containerHeight, String tag) {
 		super(buttonIdBase, 0, 0, width, height, null);
 		this.anchorType = anchorType;
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		this.buttonSpacing = buttonSpacing;
-		this.nextButtonID = buttonIdBase +1;
-		this.tag = tag;
+	    this.xOffset = xOffset;
+	    this.yOffset = yOffset;
+	    this.buttonSpacing = buttonSpacing;
+	    this.nextButtonID = buttonIdBase + 1;
+	    this.tag = tag;
 		updatePosition(containerWidth, containerHeight);
 	}
 	

@@ -5,7 +5,7 @@ import net.minecraft.inventory.Slot;
 
 public class PrivateClasses<C> {
 
-	public final Class<? extends C> Class;
+	public Class<? extends C> Class = null;
 
 	private final String className;
 

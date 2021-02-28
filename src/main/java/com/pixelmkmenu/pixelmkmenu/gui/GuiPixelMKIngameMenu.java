@@ -79,11 +79,12 @@ public class GuiPixelMKIngameMenu extends GuiIngameMenu implements IMouseEventPr
 		float tweenAmount = (float)Math.sin(tweenPct * Math.PI);
 		int colour = (int)(192.0f * tweenAmount) << 24;
 		GL11.glPushMatrix();
-		GL11.glTranslatef(-10.0f + tweenAmount * 20.0f, 0.0f, 0.0f);
+		GL11.glTranslatef(-10.0F + tweenAmount * 20.0F, 0.0F, 0.0F);
 		drawGradientRect(10, 0, 184, this.height, colour, colour);
 		Gui.drawRect(10, 0, 11, this.height, -1);
-		GL11.glTranslatef(-10.0f + tweenAmount * 10.0f, 0.0f, 0.0f);
+		GL11.glTranslatef(-10.0F + tweenAmount * 10.0F, 0.0F, 0.0F);
 		GL11.glPushMatrix();
+		GL11.glTranslatef(27.0F, 40.0F, 0.0F);
 		GL11.glScalef(2.0f, 2.0f, 1.0f);
 		drawString(this.fontRenderer, I18n.format("menu.game", new Object[0]), 0, 0, 16777215);
 		GL11.glPopMatrix();
