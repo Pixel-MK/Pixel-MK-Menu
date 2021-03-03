@@ -1,5 +1,11 @@
 package com.pixelmkmenu.pixelmkmenu;
 
+/**
+ *  To help with reflection.
+ *  Migrate to reflectionHelper
+ * @author Joe
+ * @deprecated
+ */
 public enum ObfuscationMapping {
 	minecraftTimer("timer", "Q", "field_71428_T"),
 	debugFPS("debugFPS", "ac", "field_71470_ab"),
@@ -69,8 +75,8 @@ public enum ObfuscationMapping {
 	standing_sign("standing_sign", "an", "field_150472_an"),
 	wall_sign("wall_sign", "as", "field_150444_as"),
 	mob_spawner("mob_spawner", "ac", "field_150474_ac"),
-	internetServerList(null, "i", "field_146804_i"),
-	serverSelectionList(null, "h", "field_146803_h"),
+	internetServerList("savedServerList", "i", "field_146804_i"),
+	serverSelectionList("serverListSelector", "h", "field_146803_h"),
 	guiResourcePacksParentScreen(null, "f", "field_146965_f"),
 	abstractResourcePackFile("resourcePackFile", "a", "field_110597_b"),
 	mcFramebuffer("framebufferMc", "au", "field_147124_at"),

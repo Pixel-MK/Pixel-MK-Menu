@@ -47,7 +47,7 @@ public class GuiDialogBoxFavouriteServer extends GuiDialogBox {
 	}
 	
 	public void onSubmit() {
-		this.mainMenu.setCustomServerIP(this.txtServerName.getText(), this.txtServerName.getText());
+		this.mainMenu.setCustomServerIP(this.txtServerName.getText(), this.txtServerIP.getText());
 	}
 	
 	public boolean validateDialog() {

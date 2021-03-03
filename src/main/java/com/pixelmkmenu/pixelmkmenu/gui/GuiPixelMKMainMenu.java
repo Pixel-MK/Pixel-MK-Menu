@@ -4,13 +4,9 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
-
-import org.apache.commons.logging.Log;
 import org.lwjgl.opengl.GL11;
 
 import com.pixelmkmenu.pixelmkmenu.CustomScreenEntry;
@@ -18,7 +14,6 @@ import com.pixelmkmenu.pixelmkmenu.ForgeHandler;
 import com.pixelmkmenu.pixelmkmenu.ObfuscationMapping;
 import com.pixelmkmenu.pixelmkmenu.PixelMKMenuConfig;
 import com.pixelmkmenu.pixelmkmenu.PixelMKMenuCore;
-import com.pixelmkmenu.pixelmkmenu.PrivateMethods;
 import com.pixelmkmenu.pixelmkmenu.ThreadMainMenuInfo;
 import com.pixelmkmenu.pixelmkmenu.Version;
 import com.pixelmkmenu.pixelmkmenu.controls.GuiButtonCustomScreen;
@@ -28,6 +23,7 @@ import com.pixelmkmenu.pixelmkmenu.controls.GuiButtonPanel;
 import com.pixelmkmenu.pixelmkmenu.gui.dialogs.GuiDialogBoxFavouriteServer;
 import com.pixelmkmenu.pixelmkmenu.interfaces.IPanoramaRenderer;
 import com.pixelmkmenu.pixelmkmenu.sound.SoundEffect;
+import com.pixelmkmenu.pixelmkmenu.util.PrivateMethods;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -78,8 +74,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	
 	private List<GuiButtonCustomScreen> customScreenButtons = new ArrayList<GuiButtonCustomScreen>();
 	
-	private String modPackText;
-	private String versionText;
+	private String ModpackText = "Pixel MK modpack version 3.0.0.1";
 	private String favouriteServerName;
 	private String favouriteServerIP;
 	private static String minecraftVersion = "";
@@ -93,10 +88,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	private static List<CustomScreenEntry> customScreenClasses = new ArrayList<CustomScreenEntry>();
 	
 	private int updateCounter = 0;
-	private static int framesCount = 12;
-	private static int framesWide = 3;
-	private static int frameWidth = 340;
-	private static int frameHeight = 255;
 	private static int untilNextMusicCheck = 0;
 	
 	private static ISound currentlyPlayingMusic;
@@ -120,8 +111,8 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	
 	public GuiPixelMKMainMenu(PixelMKMenuCore mod) {
 		this.mc = Minecraft.getMinecraft();
-		this.favouriteServerName = PixelMKMenuCore.getConfig().SERVERTEXT;
-		this.favouriteServerIP = PixelMKMenuCore.getConfig().SERVERIP;
+		this.favouriteServerName = PixelMKMenuCore.getConfig().getStringProperty(PixelMKMenuConfig.SERVERTEXT);
+		this.favouriteServerIP = PixelMKMenuCore.getConfig().getStringProperty(PixelMKMenuConfig.SERVERIP);
 		updateServerInfo();
 		IPanoramaRenderer previousRenderer = PixelMKMenuCore.getPanoramaRenderer();
 		if (previousRenderer != null) this.updateCounter = previousRenderer.getUpdateCounter();
@@ -138,7 +129,10 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	public void setCustomServerIP(String name, String IP) {
 		this.favouriteServerName = name;
 		this.favouriteServerIP = IP;
-		PixelMKMenuCore.getConfig().SERVERTEXT = name;
+		PixelMKMenuCore.getConfig().setProperty(PixelMKMenuConfig.SERVERTEXT, name);
+		PixelMKMenuCore.getConfig().setProperty(PixelMKMenuConfig.SERVERIP, IP);
+		this.btnConnectToServer.displayString = "Connect to " + ((name != null && name.length() > 0) ? name : "...");
+		updateServerInfo();
 	}
 	
 	public synchronized void handleServerData(ServerPinger serverPinger, ServerData serverData) {
@@ -152,7 +146,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		if(untilNextMusicCheck < 1 && !soundHandler.isSoundPlaying(currentlyPlayingMusic) && 
 				PixelMKMenuCore.isMusicEnabled() && PixelMKMenuCore.hasMenuMusic()) {
 			untilNextMusicCheck = 200;
-			currentlyPlayingMusic = (ISound)new SoundEffect(this.menuTracks, PixelMKMenuCore.getConfig().MENUVOLUME, 1.0f);
+			currentlyPlayingMusic = (ISound)new SoundEffect(this.menuTracks, PixelMKMenuCore.getConfig().getFloatProperty(PixelMKMenuConfig.MENUVOLUME), 1.0f);
 			soundHandler.playSound(currentlyPlayingMusic);
 		}
 		if(!PixelMKMenuCore.isMusicEnabled() && currentlyPlayingMusic != null && soundHandler.isSoundPlaying(currentlyPlayingMusic)) {
@@ -189,7 +183,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		this.buttonList.add(this.buttonPanelRight);
 		this.buttonList.add(this.btnMute = new GuiButtonMute(300, this.width- 24, 4));
 		this.btnMute.muted = !PixelMKMenuCore.isMusicEnabled();
-		this.btnTexturePack.visible = PixelMKMenuCore.getConfig().SHOWTPONMENU;
+		this.btnTexturePack.visible = PixelMKMenuCore.getConfig().getBoolProperty(PixelMKMenuConfig.SHOWTPONMENU);
 		this.btnAboutForgeMods.visible = true;
 		PixelMKMenuCore.setPanoramaRenderer(this);
 	}
@@ -295,7 +289,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		drawRect(mouseX + 14, mouseY, mouseX + xSize, mouseY + ySize, 1610612736);
 		GL11.glEnable(3042);
 		GL11.glDisable(3553);
-		bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
 		bb.pos((mouseX + 14), (mouseY + ySize), 0.0d).endVertex();
 		bb.pos((mouseX+14), mouseY, 0.0d).endVertex();
 		bb.pos(mouseX, (mouseY + yOffset), 0.0d).endVertex();
@@ -312,7 +306,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		this.buttonPanelLeft.updateButtons(this.updateCounter, partialTicks, mouseX, mouseY);
 		this.buttonPanelRight.updateButtons(this.updateCounter, partialTicks, mouseX, mouseY);
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		int offset = this.fontRenderer.drawString(this.modPackText, 2, 2, -1);
 		if (this.favouriteServerData != null && this.btnConnectToServer != null && this.buttonPanelLeft.isMouseOver(this.btnConnectToServer, this.mc, mouseX, mouseY)) {
 			String text = this.favouriteServerData.serverMOTD;
 			if(this.favouriteServerData.pingToServer > -1L && this.favouriteServerData.populationInfo != null) {
@@ -331,6 +324,11 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 				top += 10;
 			}
 		}
+		//Modpack branding in top left
+		drawString(this.fontRenderer, "Pixel MK Modpack", 2, 2, 16777215);
+		if(mouseX < 87 && mouseY < 9) {
+			drawToolTip(mouseX+4, mouseY+13, -7, 200, 16, ModpackText);
+		}
 	}
 	
 	public static void registerCustomScreen(String panelName, Class<? extends GuiScreen> customScreenClass, String customScreenText) {
@@ -338,16 +336,11 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		customScreenClasses.add(new CustomScreenEntry(panelName, customScreenClass, customScreenText));
 	}
 	
-	@Deprecated
-	public static void registerCustomScreen(Class<? extends GuiScreen> customScreenClass, String customScreenText) {
-		registerCustomScreen("right", customScreenClass, customScreenText);
-	}
-	
 	public void drawTexturedModalRect(int x, int y, int x2, int y2, int u, int v, int u2, int v2) {
 		float texMapScale = 9.765625E-4f;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
-		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bb.pos(x, y2, 0.0d).tex((u * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y2, 0.0d).tex((u2 * texMapScale), (v2 * texMapScale)).endVertex();
 		bb.pos(x2, y, 0.0d).tex((u2 * texMapScale), (v * texMapScale)).endVertex();

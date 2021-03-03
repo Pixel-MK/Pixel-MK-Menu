@@ -1,6 +1,8 @@
-package com.pixelmkmenu.pixelmkmenu;
+package com.pixelmkmenu.pixelmkmenu.util;
 
 import java.lang.reflect.Method;
+
+import com.pixelmkmenu.pixelmkmenu.ObfuscationMapping;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;

@@ -25,7 +25,7 @@ public class GuiButtonMainMenu extends GuiButton{
 
 	public GuiButtonMainMenu(int buttonId, int xPos, int yPos, String displayString, boolean rightAlign) {
 		super(buttonId, xPos, yPos, displayString);
-		this.y = 16;
+		this.height = 16;
 		this.width = 150;
 		this.textWidth = (Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString));
 		this.rightAlign = rightAlign;
@@ -96,7 +96,7 @@ public class GuiButtonMainMenu extends GuiButton{
 	public void drawButtonBackground(Boolean mouseOver, int hlAlpha, int hlGBCol) {
 		int w = mouseOver ? Math.min(this.width, (int)(this.width * 2.5F * this.alpha)) : this.width;
 		if(this.rightAlign) {
-			drawRect(this.x + this.width - w, this.y, this.x + this.width, this.y + this.height, hlAlpha | hlGBCol << 8| hlGBCol, 4);
+			drawRect(this.x + this.width - w, this.y, this.x + this.width, this.y + this.height, hlAlpha | hlGBCol << 8 | hlGBCol, 4);
 		}
 		else {
 			drawRect(this.x, this.y, this.x + w, this.y + this.height, hlAlpha | hlGBCol << 8 | hlGBCol, 4);
@@ -125,24 +125,24 @@ public class GuiButtonMainMenu extends GuiButton{
 			y1 = y2;
 			y2 = var5;
 		}
-		float var10 = (colour >> 24 & 0xFF) / 255.0f;
-		float var6 = (colour >> 16 & 0xFF) / 255.0f;
-		float var7 = (colour >> 8 & 0xFF) / 255.0f;
-		float var8 = (colour & 0xFF) / 255.0f;
+		float var10 = (colour >> 24 & 0xFF) / 255.0F;
+	    float var6 = (colour >> 16 & 0xFF) / 255.0F;
+	    float var7 = (colour >> 8 & 0xFF) / 255.0F;
+	    float var8 = (colour & 0xFF) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder BufferBuilder = tessellator.getBuffer();
 		GL11.glEnable(3042);
-		GL11.glDisable(3553);
-		GL11.glBlendFunc(770, 771);
-		GL11.glColor4f(var6, var7, var8, var10);
-		BufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
-		BufferBuilder.pos(x1+offset, y2, 0.0d).endVertex();
+	    GL11.glDisable(3553);
+	    GL11.glBlendFunc(770, 771);
+	    GL11.glColor4f(var6, var7, var8, var10);
+		BufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		BufferBuilder.pos((x1 + offset), y2, 0.0d).endVertex();
 		BufferBuilder.pos(x2, y2, 0.0d).endVertex();
-		BufferBuilder.pos(x2-offset, y1, 0.0d).endVertex();
+		BufferBuilder.pos((x2 - offset), y1, 0.0d).endVertex();
 		BufferBuilder.pos(x1, y1, 0.0d).endVertex();
 		tessellator.draw();
 		GL11.glEnable(3553);
-		GL11.glDisable(3042);
+	    GL11.glDisable(3042);
 	}
 	
 	public int getWidth() {

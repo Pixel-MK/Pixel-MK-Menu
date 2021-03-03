@@ -1,6 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu;
 
-import java.io.File;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +17,12 @@ import com.pixelmkmenu.pixelmkmenu.fx.FrameBufferProxy;
 import com.pixelmkmenu.pixelmkmenu.fx.ScreenTransition;
 import com.pixelmkmenu.pixelmkmenu.fx.Transitions.ScreenTransitionFade;
 import com.pixelmkmenu.pixelmkmenu.gl.FBO;
-import com.pixelmkmenu.pixelmkmenu.gui.GuiPixelMKIngameMenu;
-import com.pixelmkmenu.pixelmkmenu.gui.GuiPixelMKMainMenu;
 import com.pixelmkmenu.pixelmkmenu.interfaces.IPanoramaRenderer;
-import com.pixelmkmenu.pixelmkmenu.interfaces.IPixelMenuCore;
 import com.pixelmkmenu.pixelmkmenu.login.CustomServerDataManager;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundEventAccessor;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.gui.ScaledResolution;
@@ -40,29 +33,21 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.resource.IResourceType;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.client.resources.IReloadableResourceManager;
 
-@Mod(modid = PixelMKMenuCore.MODID, name = "Pixel MK Menu", version = PixelMKMenuCore.VERSION, acceptedMinecraftVersions = "[1.12.2]")
-public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelectiveResourceReloadListener{
+
+public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceReloadListener{
+	private static final Logger LOGGER = LogManager.getLogger("pixelmkmenu");
+	
 	public static final ResourceLocation MUSIC_STANDARD = new ResourceLocation("PixelMKMenu", "music.PixelMKMenu");
 	
 	public static PixelMKMenuCore mod;
 	private boolean fboEnabled = false;
-	
-	public static final String MODID = "pixelmkmenu";
-    public static final String VERSION = "$version";
 	
 	private ScreenTransition defaultTransition = (ScreenTransition)new ScreenTransitionFade();
 	private List<ScreenTransition> availableTransitions = new ArrayList<ScreenTransition>();
@@ -100,55 +85,25 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 	private static IPanoramaRenderer panoramaRenderer;
 	
 	public static PixelMKMenuConfig configOpts = new PixelMKMenuConfig();
-	private static Configuration config;
-	
-	private static final Logger LOGGER = LogManager.getLogger("pixelmkmenu");
 	
 	public PixelMKMenuCore() {
 		mod = this;
-	}
-	
-	public String getVersion() {
-		return VERSION;
-	}
-	
-	public String getName() {
-		return MODID;
 	}
 	
 	private static CustomServerDataManager getServerDataManager() {
 		return serverDataManager;
 	}
 	
-	public void loadConfig() {
-		File configFile = new File(Loader.instance().getConfigDir(), "PixelMKMenu.cfg");
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (Exception e) {
-                LOGGER.warn("Could not create a new Pixel MK Menu config file.");
-                LOGGER.warn(e.getLocalizedMessage());
-            }
-        }
-        config = new Configuration(configFile);
-        config.load();
+	public static void WriteLogInfo(String message) {
+		LOGGER.info(message);
 	}
 	
-	public static void syncConfig() {
-		configOpts.init(config);
-        config.save();
-	}
-	
-	@Mod.EventHandler
-	public void onPreInit(FMLPreInitializationEvent event) {
-		loadConfig();
-        syncConfig();
-        MinecraftForge.EVENT_BUS.register(new EventSharedConfig());
+	public static void WriteLogWarn(String message) {
+		LOGGER.warn(message);
 	}
 	
 	
-	@Mod.EventHandler
-	public void onInit(FMLInitializationEvent event) {
+	public void onInit() {
 		this.mc = Minecraft.getMinecraft();
 		this.fboEnabled = FBO.detectFBOCapabilities();
 		registerTransition((ScreenTransition)new ScreenTransitionFade());
@@ -164,8 +119,7 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 		}
 	}
 	
-	@Mod.EventHandler
-	public void onPostInit(FMLPostInitializationEvent event) {
+	public void onPostInit() {
 		if(this.fboEnabled) {
 			LOGGER.info("FBO capability is supported, enabling transitions.");
 			this.transitionFBOs[0] = new FBO();
@@ -175,7 +129,7 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 		}
 		IResourceManager resourceManager = this.mc.getResourceManager();
 		((IReloadableResourceManager)resourceManager).registerReloadListener(this);
-		enableMenuMusic = !configOpts.MUTE;
+		enableMenuMusic = !getConfig().getBoolProperty(PixelMKMenuConfig.MUTE);
 	}
 	
 	@SubscribeEvent
@@ -216,7 +170,7 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 	@SubscribeEvent
 	public void onRenderGui(GuiScreenEvent event, GuiScreen currentScreen) {
 		if(event.getGui() == null && this.mc.gameSettings.keyBindPlayerList.isKeyDown()) return;
-		if(!configOpts.TRANSITIONS) return;
+		if(!getConfig().getBoolProperty(PixelMKMenuConfig.TRANSITIONS)) return;
 		if(!this.fboEnabled) return;
 		if(this.mc.world != null) {
 			this.transitionFBOs[0].dispose();
@@ -229,7 +183,7 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 				this.previousWasScreen = (this.transitionScreen != null);
 				this.transitionPct = 0.0f;
 				this.transitionBeginTime = Minecraft.getSystemTime();
-				this.transitionRate = Math.min(Math.max(configOpts.TRANSITIONRATE, 0.1f), 10.0f);
+				this.transitionRate = getConfig().getClampedFloatProperty(PixelMKMenuConfig.TRANSITIONRATE, 0.1F, 10.0F);
 			}
 			this.transitionScreen = currentScreen;
 			this.transitionFrames = 0;
@@ -281,7 +235,7 @@ public class PixelMKMenuCore extends GuiScreen implements IPixelMenuCore, ISelec
 	}
 	
 	private ScreenTransition createTransition() {
-		if(configOpts.FUNKY && this.activeTransitions.size() > 0) {
+		if(configOpts.getBoolProperty(PixelMKMenuConfig.FUNKY) && this.activeTransitions.size() > 0) {
 			int random = rand.nextInt(this.activeTransitions.size());
 			return this.activeTransitions.get(random);
 		}

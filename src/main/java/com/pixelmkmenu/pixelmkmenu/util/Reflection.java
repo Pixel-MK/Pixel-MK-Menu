@@ -1,6 +1,8 @@
-package com.pixelmkmenu.pixelmkmenu;
+package com.pixelmkmenu.pixelmkmenu.util;
 
 import java.lang.reflect.Field;
+
+import com.pixelmkmenu.pixelmkmenu.ModUtil;
 
 public class Reflection {
 	private static Field MODIFIERS = null;

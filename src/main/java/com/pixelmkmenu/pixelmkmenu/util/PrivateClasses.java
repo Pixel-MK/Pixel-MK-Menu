@@ -1,11 +1,13 @@
-package com.pixelmkmenu.pixelmkmenu;
+package com.pixelmkmenu.pixelmkmenu.util;
+
+import com.pixelmkmenu.pixelmkmenu.ObfuscationMapping;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
 public class PrivateClasses<C> {
 
-	public final Class<? extends C> Class;
+	public Class<? extends C> Class = null;
 
 	private final String className;
 

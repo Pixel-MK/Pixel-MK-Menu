@@ -34,7 +34,7 @@ public class GuiButtonMute extends GuiButton {
 	public void drawTexturedModalRect(int x, int y, int x2, int y2, float u, float v, float u2, float v2) {
 	    Tessellator tessellator = Tessellator.getInstance();
 	    BufferBuilder bb = tessellator.getBuffer();
-	    bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+	    bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 	    bb.pos(x, y2, 0.0D).tex(u, v2).endVertex();
 	    bb.pos(x2, y2, 0.0D).tex(u2, v2).endVertex();
 	    bb.pos(x2, y, 0.0D).tex(u2, v).endVertex();

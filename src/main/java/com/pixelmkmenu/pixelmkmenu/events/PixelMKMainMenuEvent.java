@@ -1,5 +1,6 @@
 package com.pixelmkmenu.pixelmkmenu.events;
 
+import com.pixelmkmenu.pixelmkmenu.PixelMKMenuConfig;
 import com.pixelmkmenu.pixelmkmenu.PixelMKMenuCore;
 import com.pixelmkmenu.pixelmkmenu.gui.GuiPixelMKIngameMenu;
 import com.pixelmkmenu.pixelmkmenu.gui.GuiPixelMKMainMenu;
@@ -20,7 +21,7 @@ public class PixelMKMainMenuEvent {
 			event.setGui((GuiScreen)new GuiPixelMKMainMenu(core));
 		}
 		if (event.getGui() instanceof GuiIngameMenu && !event.getGui().getClass().getSimpleName().startsWith("Delegate") 
-				&& core.configOpts.USEPRETTYINGAMEMENU && !(event.getGui() instanceof GuiPixelMKIngameMenu)) {
+				&& core.getConfig().getBoolProperty(PixelMKMenuConfig.USEPRETTYINGAMEMENU) && !(event.getGui() instanceof GuiPixelMKIngameMenu)) {
 			event.setGui((GuiScreen)new GuiPixelMKIngameMenu());
 		}
 	}
