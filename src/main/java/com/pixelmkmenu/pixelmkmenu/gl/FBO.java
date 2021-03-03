@@ -171,7 +171,7 @@ public class FBO {
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bb = tessellator.getBuffer();
-			bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+			bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 			bb.pos(x, y2, z).tex(u, v).endVertex();
 			bb.pos(x2, y2, z).tex(u2, v).endVertex();
 			bb.pos(x2, y, z).tex(u2, v2).endVertex();

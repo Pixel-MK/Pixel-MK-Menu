@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
-import com.pixelmkmenu.pixelmkmenu.gui.AdancedDrawGui;
+import com.pixelmkmenu.pixelmkmenu.gui.AdvancedDrawGui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -13,7 +13,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class GuiDialogBox extends AdancedDrawGui{
+public abstract class GuiDialogBox extends AdvancedDrawGui{
 	public static int lastScreenWidth;
 	public static int lastScreenHeight;
 	protected int dialogX;

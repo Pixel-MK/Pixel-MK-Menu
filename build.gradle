@@ -8,31 +8,29 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
+
+ext.configFile = file "build.properties"
+configFile.withReader {
+    // Load config. It shall from now be referenced as simply config or project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
         
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-ext.configFile = file "build.properties"
-configFile.withReader{
-	//Load build.properties for configuration. Shall be called config or project.config
-	def prop = new Properties()
-	prop.load(it)
-	project.ext.config = new ConfigSlurper().parse prop
-}
-
 version = config.mod_version
 group = "com.pixelmkmenu.pixelmkmenu"
-archivesBaseName = 'Pixel-MK-Menu'
+archivesBaseName = 'pixelmkmenu'
 
 ext.mcModInfo = new groovy.json.JsonSlurper().parse(file("src/main/resources/mcmod.info"))
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-	version = config.mc_version + "-" + config.forge_version
-
     // The mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   Snapshot are built nightly.
     // stable_#            Stables are built at the discretion of the MCP team.
@@ -46,87 +44,29 @@ minecraft {
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
-    runDir = "run"
-	if(addVersionDetails){
-		project.version += "-SNAPSHOT"
-	}
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
 	
-	replace "\$version", project.version
-	replace "\${mcversion}", version
-	replace "(gradle_replace_mcversion,)", "[" + version + "]"
-	replace "(gradle_replace_forgeversion,)", "[" + onfig.forge_version + ",)"
+	
 }
-
-task printVersion{
-	description = "Prints out the actual version used. Useful for testing buildscript (-Drelease=true to force version in build.properties)"
-	doLast{
-		println "Version = " + project.version
-	}
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir "src/main/java"
-        }
-        resources {
-            srcDir "src/main/resources"
-        }
-    }
-    test {
-        java {
-            srcDir "src/test/java"
-        }
-    }
-}
-
-processResources
-{
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        // ${version}   and    ${mcversion}    are the exact strings being replaced
-        expand "version":project.version, "mcversion":project.minecraft.version
-    }
-
-    // copy everything else, that's not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        exclude 'pack.mcmeta'
-        exclude 'pack.png'
-    }
-}
-
-def writeMCModInfo(String taskName, int... ids)
-{
-    File temp = createMCModInfo(taskName)
-    temp.parentFile.mkdirs()
-    if (temp.exists())
-        temp.delete()
-    temp.createNewFile()
-    def elements = []
-    for (int id : ids) {
-        elements += ext.mcModInfo[id];
-    }
-    String prettyPrinted = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(elements))
-    prettyPrinted = prettyPrinted.replace("\$version", project.version)
-    prettyPrinted = prettyPrinted.replace("\${mcversion}", project.minecraft.version)
-    temp.write(prettyPrinted)
-    return temp
-}
-
-def parseConfig(File config) {
-    if (!config.exists())
-        return null
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
-
 
 dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed

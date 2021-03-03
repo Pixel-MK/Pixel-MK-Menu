@@ -1,7 +1,7 @@
 package com.pixelmkmenu.pixelmkmenu.fx;
 
-import com.pixelmkmenu.pixelmkmenu.PrivateFields;
 import com.pixelmkmenu.pixelmkmenu.gl.FBO;
+import com.pixelmkmenu.pixelmkmenu.util.PrivateFields;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.shader.Framebuffer;

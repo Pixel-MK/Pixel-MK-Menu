@@ -93,6 +93,7 @@ public class ForgeHandler {
 			try {
 				mSetupServerList.invoke(fmlClientHandler, new Object[0]);
 				ServerPinger serverPinger = new ServerPinger();
+				serverPinger.ping(serverData);
 				startupConnectionData.await(30L, TimeUnit.SECONDS);
 				mConnectToServer.invoke(fmlClientHandler, new Object[] {parentScreen, serverData});
 				return true;

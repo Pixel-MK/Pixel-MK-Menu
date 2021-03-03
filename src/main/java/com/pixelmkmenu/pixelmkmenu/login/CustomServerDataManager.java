@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.pixelmkmenu.pixelmkmenu.PrivateFields;
+import com.pixelmkmenu.pixelmkmenu.util.PrivateFields;
 
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.multiplayer.ServerData;

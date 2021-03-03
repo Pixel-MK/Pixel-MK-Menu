@@ -1,51 +1,108 @@
 package com.pixelmkmenu.pixelmkmenu;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.pixelmkmenu.pixelmkmenu.fx.ScreenTransition;
+import com.pixelmkmenu.pixelmkmenu.util.ModConfig;
 
-import net.minecraft.util.SoundCategory;
-import net.minecraftforge.common.config.Configuration;
-import scala.actors.threadpool.Arrays;;
+import net.minecraftforge.fml.common.Loader;
 
-public class PixelMKMenuConfig {
-	
-	public boolean SHOWTPONMENU = false;
-	public boolean USEPRETTYINGAMEMENU = true;
-	public boolean USEPRETTYTPSCREEN = true;
-	public boolean MUTE = false;
-	public boolean TRANSITIONS = true;
-	public boolean FUNKY = false;
-	public boolean HIMOTION = false;
-	public float TRANSITIONRATE = 1.0f;
-	public float MENUVOLUME = 0.5f;
-	public String SERVERTEXT = "";
-	public String SERVERIP = "";
-	public String[] ENABLED_TRANSITIONS = {"fadebasic"};
-	public String[] ENABLED_HIMOTION_TRANSITIONS = {};
-	
-	public void init(Configuration config) {
-		this.SHOWTPONMENU = config.getBoolean("Show Resource packs on menu", "all", false, "If true, Resouce pack button will appear on the main menu");
-		this.USEPRETTYINGAMEMENU = config.getBoolean("Pause menu", "all", true, "If false, default pause menu will be used");
-		this.USEPRETTYTPSCREEN = config.getBoolean("Pretty Resource pack menu", "all", true, "If false, default resourcepack menu will be used");
-		this.MUTE = config.getBoolean("Mute main menu", "all", false, "Set to true to stop music from playing");
-		this.TRANSITIONS = config.getBoolean("Enable transitions", "all", true, "If false, no transitions will be played between menues");
-		this.FUNKY = config.getBoolean("Use all transitions", "all", false, "Enable all transitions, except Hi-motion");
-		this.HIMOTION = config.getBoolean("Use Hi-motion transitions", "all", false, "Enable Hi-motion transitions, not recommened for people with epilepsy");
-		this.TRANSITIONRATE = config.getFloat("Transition rate", "all", 1.0f, 0.1f, 10.0f, "Rate which transitions move. Between 0.1-10.0");
-		this.MENUVOLUME = config.getFloat("Menu Volume", "all", 0.5f, 0.0f, 1.0f, "The volume of the menu as a multiplier of its original volume. Between 1.0 and 0.0");
-		this.SERVERTEXT = config.getString("Favourite Server Name", "favourite server", "", "Name of your favourite server, will appear on main menu");
-		this.SERVERIP = config.getString("Favourite Server IP", "favourite server", "", "IP address of your favourite server");
-		String[] DefaultTransitions = {"fadebasic"};
-		String[] DefaultHiMotion = {}; 
-		this.ENABLED_TRANSITIONS = config.getStringList("Enabled transitions", "all", DefaultTransitions, "List of enabled transitions");
-		this.ENABLED_HIMOTION_TRANSITIONS = config.getStringList("Enabled Hi-motion transitions", "all", DefaultHiMotion, "Enabled Hi-motion transitions");
+public class PixelMKMenuConfig extends ModConfig {
+
+	public static String UPGRADED = "upgraded";
+
+	public static String MENUVOLUME = "Menu_Volume";
+
+	public static String SHOWTPONMENU = "Show_Resource_Packs_On_Main_Menu";
+
+	public static String USEPRETTYTPSCREEN = "Pretty_Resource_Pack_Menu";
+
+	public static String USEPRETTYINGAMEMENU = "Fancy_Pause_Menu";
+
+	public static String SERVERTEXT = "Favourite_Server_Name";
+
+	public static String SERVERIP = "serverIP";
+
+	public static String MUTE = "Mute_Main_Menu";
+
+	public static String TRANSITIONS = "Enable_Transitions";
+
+	public static String FUNKY = "Use_All_Transitions";
+
+	public static String HIMOTION = "Use_Hi-motion_Transitions";
+
+	public static String TRANSITIONRATE = "Transition_Rate";
+
+	public static String ENABLED_TRANSITIONS = "Enabled_Transitions";
+
+	public static String ENABLED_HIMOTION_TRANSITIONS = "Enabled_Hi-motion_transitions";
+
+	public PixelMKMenuConfig() {
+		super("PixelMKMenu", "pixelmkmenu.cfg");
+		if (!getBoolProperty(UPGRADED)) {
+			handleUpgradeSettings();
+			setProperty(UPGRADED, true);
+		} 
 	}
-	
+
+	protected void handleUpgradeSettings() {
+		try {
+			File settingsPath = new File(Loader.instance().getConfigDir(), "PixelMKMenu");
+			if(settingsPath.exists()) {
+				try {
+					File serverPropertiesFile = new File(settingsPath, "VoxelServer.properties");
+					if (serverPropertiesFile.exists()) {
+						Properties serverProperties = new Properties();
+						serverProperties.load(new FileReader(serverPropertiesFile));
+						setProperty(SERVERTEXT, serverProperties.getProperty("Text", getStringProperty(SERVERTEXT)));
+						setProperty(SERVERIP, serverProperties.getProperty("IP", getStringProperty(SERVERIP)));
+					}
+				} catch (IOException ex) {}
+				try {
+					File menuPropertiesFile = new File(settingsPath, "PixelMKMenu.cfg");
+					if (menuPropertiesFile.exists()) {
+						Properties menuProperties = new Properties();
+						menuProperties.load(new FileReader(menuPropertiesFile));
+						setProperty(SHOWTPONMENU, "true".equals(menuProperties.getProperty("ShowTexturePacks", getStringProperty(SHOWTPONMENU))));
+						setProperty(USEPRETTYINGAMEMENU, "true".equals(menuProperties.getProperty("CustomInGameMenu", getStringProperty(USEPRETTYINGAMEMENU))));
+						setProperty(USEPRETTYTPSCREEN, "true".equals(menuProperties.getProperty("CustomTexturePacksScreen", getStringProperty(USEPRETTYTPSCREEN))));
+						setProperty(MENUVOLUME, menuProperties.getProperty("Volume", getStringProperty(MENUVOLUME)));
+					}
+				} catch (IOException e) {}
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
+
+	public boolean enableHiMotion() {
+		return getBoolProperty(HIMOTION);
+	}
+
 	public boolean isTransitionEnabled(ScreenTransition transition) {
 		return isTransitionEnabled(transition.isHighMotion(), transition.getName());
 	}
-	
+
 	public boolean isTransitionEnabled(boolean highMotion, String transitionName) {
-		if (highMotion) return (HIMOTION && Arrays.asList(ENABLED_HIMOTION_TRANSITIONS).contains(transitionName));
-		return Arrays.asList(ENABLED_TRANSITIONS).contains(transitionName);
+		if (highMotion) return (enableHiMotion() && getStringProperty(ENABLED_HIMOTION_TRANSITIONS).toLowerCase().contains(transitionName));
+		return getStringProperty(ENABLED_TRANSITIONS).toLowerCase().contains(transitionName);
+	}
+
+	protected void setDefaults() {
+		this.defaults.put(UPGRADED, "false");
+		this.defaults.put(SERVERTEXT, "");
+		this.defaults.put(SERVERIP, "");
+		this.defaults.put(MENUVOLUME, "0.5");
+		this.defaults.put(SHOWTPONMENU, "false");
+		this.defaults.put(USEPRETTYTPSCREEN, "true");
+		this.defaults.put(USEPRETTYINGAMEMENU, "true");
+		this.defaults.put(MUTE, "false");
+		this.defaults.put(TRANSITIONS, "true");
+		this.defaults.put(FUNKY, "false");
+		this.defaults.put(HIMOTION, "false");
+		this.defaults.put(TRANSITIONRATE, "1.0");
+		this.defaults.put(ENABLED_TRANSITIONS, "fadebasic,fadegrow,fadedrop,fadeslide");
+		this.defaults.put(ENABLED_HIMOTION_TRANSITIONS, "drop,slide,tiles1,tiles2,rotate,blinds,ripple,spiral");
 	}
 }

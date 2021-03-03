@@ -1,9 +1,11 @@
-package com.pixelmkmenu.pixelmkmenu;
+package com.pixelmkmenu.pixelmkmenu.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+
+import com.pixelmkmenu.pixelmkmenu.ObfuscationMapping;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISoundEventAccessor;
