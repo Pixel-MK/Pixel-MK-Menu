@@ -19,6 +19,7 @@ import com.pixelmkmenu.pixelmkmenu.fx.Transitions.ScreenTransitionFade;
 import com.pixelmkmenu.pixelmkmenu.gl.FBO;
 import com.pixelmkmenu.pixelmkmenu.interfaces.IPanoramaRenderer;
 import com.pixelmkmenu.pixelmkmenu.login.CustomServerDataManager;
+import com.pixelmkmenu.pixelmkmenu.util.PrivateFields;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundEventAccessor;
@@ -44,7 +45,7 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceReloadListener{
 	private static final Logger LOGGER = LogManager.getLogger("pixelmkmenu");
 	
-	public static final ResourceLocation MUSIC_STANDARD = new ResourceLocation("PixelMKMenu", "music.PixelMKMenu");
+	public static final ResourceLocation MUSIC_STANDARD = new ResourceLocation("pixelmkmenu", "music.pixelmkmenu");
 	
 	public static PixelMKMenuCore mod;
 	private boolean fboEnabled = false;
@@ -137,7 +138,7 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		if(hasMenuMusic) {
 			SoundEventAccessor accessor = this.mc.getSoundHandler().getAccessor(mc.getAmbientMusicType().getMusicLocation().getSoundName());
 			//TODO soundPool field fix
-			//if (accessor != null) ((List)PrivateFields.eventSounds.get(accessor)).clear();
+			if (accessor != null) ((List)PrivateFields.eventSounds.get(accessor)).clear();
 		}
 	}
 	

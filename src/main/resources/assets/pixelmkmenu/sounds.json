@@ -1,0 +1,23 @@
+{
+  "music.pixelmkmenu": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "pixelmkmenu:menu1",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu2",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu3",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu4",
+        "stream": true
+      }
+    ]
+  }
+}

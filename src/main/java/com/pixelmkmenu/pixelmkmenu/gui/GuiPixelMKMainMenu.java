@@ -236,6 +236,11 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		GuiButtonMainMenu guiButtonMainMenu;
+		if ((guiButton).id == this.btnMute.id) {
+			PixelMKMenuCore.setMusicState(this.btnMute.muted);
+			this.btnMute.muted = !this.btnMute.muted;
+			if(!this.btnMute.muted) untilNextMusicCheck = 0;
+		}
 		if(guiButton.id == this.buttonPanelLeft.id) {
 			guiButtonMainMenu = this.buttonPanelLeft.getPressedButton();
 		} else if (guiButton.id == this.buttonPanelRight.id) {
@@ -266,11 +271,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		}
 		if (this.btnAboutForgeMods != null && ((GuiButton)guiButtonMainMenu).id == this.btnAboutForgeMods.id) {
 			this.mc.displayGuiScreen((GuiScreen)new GuiModList((GuiScreen)this));
-		}
-		if (((GuiButton)guiButtonMainMenu).id == this.btnMute.id) {
-			PixelMKMenuCore.setMusicState(this.btnMute.muted);
-			this.btnMute.muted = !this.btnMute.muted;
-			if(!this.btnMute.muted) untilNextMusicCheck = 0;
 		}
 		if (guiButtonMainMenu instanceof GuiButtonCustomScreen) {
 			GuiButtonCustomScreen customScreenButton = (GuiButtonCustomScreen)guiButtonMainMenu;
@@ -311,8 +311,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 			if(this.favouriteServerData.pingToServer > -1L && this.favouriteServerData.populationInfo != null) {
 				text = "Player Count: " + this.favouriteServerData.populationInfo;
 			}
-			drawToolTip(this.buttonPanelLeft.getAdjustedXPosition(this.btnConnectToServer) +150, this.buttonPanelLeft.getAdjustedYPosition(this.btnConnectToServer) + 10,
-					-4, this.fontRenderer.getStringWidth(text) + 18, 16, text);
+			drawToolTip(this.buttonPanelLeft.getAdjustedXPosition(this.btnConnectToServer) +150, this.buttonPanelLeft.getAdjustedYPosition(this.btnConnectToServer) + 10, -4, this.fontRenderer.getStringWidth(text) + 18, 16, text);
 		}
 		List<String> fmlBrandings = ForgeHandler.getBrandings();
 		if (fmlBrandings != null && fmlBrandings.size() > 0 && mouseX < 80 && mouseY > this.height - 16) {
@@ -328,7 +327,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		drawString(this.fontRenderer, "Pixel MK Modpack", 2, 2, 16777215);
 		if(mouseX < 87 && mouseY < 9) {
 			drawToolTip(mouseX+4, mouseY+13, -7, 200, 16, ModpackText);
-		}
+		}		
 	}
 	
 	public static void registerCustomScreen(String panelName, Class<? extends GuiScreen> customScreenClass, String customScreenText) {
