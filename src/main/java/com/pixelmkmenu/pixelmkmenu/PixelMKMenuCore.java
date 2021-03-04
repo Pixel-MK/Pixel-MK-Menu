@@ -45,6 +45,7 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceReloadListener{
 	private static final Logger LOGGER = LogManager.getLogger("pixelmkmenu");
 	
+
 	public static final ResourceLocation MUSIC_STANDARD = new ResourceLocation("pixelmkmenu", "music.pixelmkmenu");
 	
 	public static PixelMKMenuCore mod;
