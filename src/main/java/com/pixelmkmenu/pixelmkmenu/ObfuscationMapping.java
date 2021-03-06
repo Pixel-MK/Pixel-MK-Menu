@@ -80,7 +80,7 @@ public enum ObfuscationMapping {
 	guiResourcePacksParentScreen(null, "f", "field_146965_f"),
 	abstractResourcePackFile("resourcePackFile", "a", "field_110597_b"),
 	mcFramebuffer("framebufferMc", "au", "field_147124_at"),
-	eventSounds("accessorList", "a", "field_188716_a"),
+	eventSounds("accessorList", "field_188716_a", "field_188716_a"),
 	worldInfo("worldInfo", "x", "field_72986_A"),
 	SlotCreativeInventory(null, "bfn", "net.minecraft.client.gui.inventory.GuiContainerCreative$CreativeSlot"),
 	ContainerCreative(null, "bfm", "net.minecraft.client.gui.inventory.GuiContainerCreative$ContainerCreative"),

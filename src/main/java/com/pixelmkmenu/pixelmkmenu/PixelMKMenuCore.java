@@ -1,5 +1,9 @@
 package com.pixelmkmenu.pixelmkmenu;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
-
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.pixelmkmenu.pixelmkmenu.events.PixelMKMainMenuEvent;
 import com.pixelmkmenu.pixelmkmenu.fx.FrameBufferProxy;
 import com.pixelmkmenu.pixelmkmenu.fx.ScreenTransition;
@@ -37,6 +42,7 @@ import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.client.resources.IReloadableResourceManager;
@@ -62,6 +68,7 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 	private boolean previousWasScreen;
 	private static boolean hasMenuMusic = true;
 	private static boolean enableMenuMusic = true;
+	public static boolean inModpack;
 	
 	protected GuiScreen swappedScreen;
 	private GuiScreen transitionScreen;
@@ -87,6 +94,9 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 	
 	public static PixelMKMenuConfig configOpts = new PixelMKMenuConfig();
 	
+	private static String ModpackName;
+	private static String ModpackVer;
+	
 	public PixelMKMenuCore() {
 		mod = this;
 	}
@@ -110,9 +120,45 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		registerTransition((ScreenTransition)new ScreenTransitionFade());
 		MinecraftForge.EVENT_BUS.register(new PixelMKMainMenuEvent());
 		updateRegisteredTransitions();
+		checkIfInModpack();
 		LOGGER.info("Initialisation Complete");
 	}
 	
+	public void checkIfInModpack() {
+		File modpackJSON = new File(Loader.instance().getConfigDir(), "../Modpack.json");
+		if (modpackJSON.exists() && modpackJSON.canRead()) {
+			inModpack = true;
+			try {
+				JsonReader jsonReader = new JsonReader(new FileReader(modpackJSON));
+				jsonReader.beginObject();
+				while (jsonReader.hasNext()) {
+					String next = jsonReader.nextName();
+					if (next.equals("Name")) {
+						this.ModpackName = jsonReader.nextString(); 
+					} else if (next.equals("Version")) {
+						this.ModpackVer = jsonReader.nextString();
+					}else {
+						LOGGER.warn("Unknown modpack arg: " + jsonReader.nextString() + ". SKIPPED");
+					}
+				}
+				jsonReader.endObject();
+			} catch (Exception e) {
+				e.printStackTrace();
+				inModpack = false;
+			}
+		} else {
+			LOGGER.info("No modpack file detected, assuming not in modpack.");
+		}
+	}
+	
+	public static String getModpackName() {
+		return ModpackName;
+	}
+
+	public static String getModpackVer() {
+		return ModpackVer;
+	}
+
 	public void updateRegisteredTransitions() {
 		this.activeTransitions.clear();
 		for (ScreenTransition transition : this.availableTransitions) {

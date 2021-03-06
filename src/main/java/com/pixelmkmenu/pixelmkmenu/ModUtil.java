@@ -6,7 +6,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 
 public abstract class ModUtil {
-	private static boolean fmlDetected = false;
+	private static boolean fmlDetected = true;
 	private static boolean seargeNames = false;
 	
 	static {

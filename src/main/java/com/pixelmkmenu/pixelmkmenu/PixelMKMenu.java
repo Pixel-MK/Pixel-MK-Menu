@@ -10,7 +10,7 @@ public class PixelMKMenu {
 	
 	public static final String MODID = "pixelmkmenu";
     public static final String VERSION = "$version";
-    public PixelMKMenuCore mod = new PixelMKMenuCore();
+    public PixelMKMenuCore mod;
     
 	public String getVersion() {
 		return VERSION;
@@ -18,6 +18,11 @@ public class PixelMKMenu {
 	
 	public String getName() {
 		return MODID;
+	}
+	
+	@Mod.EventHandler
+	public void onPreInit(FMLPreInitializationEvent event) {
+		mod = new PixelMKMenuCore();
 	}
 	
 	@Mod.EventHandler

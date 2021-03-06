@@ -119,6 +119,10 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		
 	}
 	
+	protected void updateModpackInfo() {
+		
+	}
+	
 	protected void updateServerInfo() {
 		if(this.favouriteServerIP != null) {
 			ThreadMainMenuInfo infoFetchThread = new ThreadMainMenuInfo(this, this.favouriteServerName, this.favouriteServerIP);
@@ -240,6 +244,7 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 			PixelMKMenuCore.setMusicState(this.btnMute.muted);
 			this.btnMute.muted = !this.btnMute.muted;
 			if(!this.btnMute.muted) untilNextMusicCheck = 0;
+			PixelMKMenuCore.getConfig().setProperty(PixelMKMenuConfig.MUTE, this.btnMute.muted);
 		}
 		if(guiButton.id == this.buttonPanelLeft.id) {
 			guiButtonMainMenu = this.buttonPanelLeft.getPressedButton();
@@ -323,11 +328,14 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 				top += 10;
 			}
 		}
-		//Modpack branding in top left
-		drawString(this.fontRenderer, "Pixel MK Modpack", 2, 2, 16777215);
-		if(mouseX < 87 && mouseY < 9) {
-			drawToolTip(mouseX+4, mouseY+13, -7, 200, 16, ModpackText);
-		}		
+		if(PixelMKMenuCore.inModpack) {
+			//Modpack branding in top left
+			drawString(this.fontRenderer, PixelMKMenuCore.getModpackName(), 2, 2, 16777215);
+			if(mouseX < 87 && mouseY < 9) {
+				String NameAndVer = PixelMKMenuCore.getModpackName() + " version " + PixelMKMenuCore.getModpackVer();
+				drawToolTip(mouseX+4, mouseY+13, -7, (int)(this.fontRenderer.getStringWidth(NameAndVer) * 1.2), 16, NameAndVer);
+			}
+		}
 	}
 	
 	public static void registerCustomScreen(String panelName, Class<? extends GuiScreen> customScreenClass, String customScreenText) {
