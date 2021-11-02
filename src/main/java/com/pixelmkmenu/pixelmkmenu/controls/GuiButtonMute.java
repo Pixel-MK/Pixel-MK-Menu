@@ -24,13 +24,13 @@ public class GuiButtonMute extends GuiButton {
 	@Override
 	public void drawButton(Minecraft mc, int par2, int par3, float partialTicks) {
 		mc.getTextureManager().bindTexture(speaker);
-		GL11.glEnable(3042);
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		GL11.glEnable(3553);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		float f = 0.3125f;
 		drawTexturedModalRect(this.x, this.y, this.x + this.width, this.y + this.height, this.muted ? f : 0.0F, 0.0F, f + (this.muted ? f : 0.0F), 1.0F);
 		//Fixes random overlay glitch
-		GL11.glDisable(3042);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 

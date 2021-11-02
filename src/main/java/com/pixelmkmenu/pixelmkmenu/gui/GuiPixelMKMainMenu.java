@@ -144,7 +144,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		this.favouriteServerData = serverData;
 	}
 	
-	@SubscribeEvent
 	public void tryPlayMusic() {
 		SoundHandler soundHandler = this.mc.getSoundHandler();
 		if(untilNextMusicCheck < 1 && !soundHandler.isSoundPlaying(currentlyPlayingMusic) && 
@@ -159,7 +158,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		}
 	}
 	
-	@SubscribeEvent
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
@@ -170,14 +168,15 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		tryPlayMusic();
 	}
 	
-	@SubscribeEvent
 	@Override
 	public void initGui() {
 		super.initGui();
 		this.buttonList.clear();
 		if(this.buttonPanelLeft == null) {
-			this.buttonPanelLeft = new GuiButtonPanel(100, GuiButtonPanel.AnchorType.BottomLeft, 12, 20, 150, 100, 16, this.width, this.height, "left");
-			this.buttonPanelRight = new GuiButtonPanel(200, GuiButtonPanel.AnchorType.BottomRight, 12, 20, 150, 100, 16, this.width, this.height, "right");
+			this.buttonPanelLeft = new GuiButtonPanel(100, GuiButtonPanel.AnchorType.BottomLeft, 12,
+					20, 150, 100, 16, this.width, this.height, "left");
+			this.buttonPanelRight = new GuiButtonPanel(200, GuiButtonPanel.AnchorType.BottomRight, 12,
+					20, 150, 100, 16, this.width, this.height, "right");
 			initPanelButtons();
 		}else {
 			this.buttonPanelLeft.updatePosition(this.width, this.height);
@@ -223,7 +222,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		this.btnLanguage = this.buttonPanelRight.addButton(I18n.format("options.language", new Object[0]));
 	}
 	
-	@SubscribeEvent
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
 		try {
@@ -236,7 +234,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 			this.mc.displayGuiScreen((GuiScreen)new GuiDialogBoxFavouriteServer(this, this.favouriteServerName, this.favouriteServerIP));
 	}
 	
-	@SubscribeEvent
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		GuiButtonMainMenu guiButtonMainMenu;
@@ -258,12 +255,16 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (((GuiButton)guiButtonMainMenu).id == this.btnSinglePlayer.id) this.mc.displayGuiScreen((GuiScreen)new GuiWorldSelection((GuiScreen)this));
-		if (((GuiButton)guiButtonMainMenu).id == this.btnMultiplayer.id) this.mc.displayGuiScreen((GuiScreen)new GuiMultiplayer((GuiScreen)this));
+		if (((GuiButton)guiButtonMainMenu).id == this.btnSinglePlayer.id)
+			this.mc.displayGuiScreen((GuiScreen)new GuiWorldSelection((GuiScreen)this));
+		if (((GuiButton)guiButtonMainMenu).id == this.btnMultiplayer.id)
+			this.mc.displayGuiScreen((GuiScreen)new GuiMultiplayer((GuiScreen)this));
 		if (this.btnTexturePack != null && ((GuiButton)guiButtonMainMenu).id == this.btnTexturePack.id)
 			this.mc.displayGuiScreen((GuiScreen)new GuiScreenResourcePacks((GuiScreen)this));
-		if (((GuiButton)guiButtonMainMenu).id == this.btnOptions.id) this.mc.displayGuiScreen((GuiScreen)new GuiOptions((GuiScreen)this, this.mc.gameSettings));
-		if (((GuiButton)guiButtonMainMenu).id == this.btnLanguage.id) this.mc.displayGuiScreen((GuiScreen)new GuiLanguage((GuiScreen)this, this.mc.gameSettings, this.mc.getLanguageManager()));
+		if (((GuiButton)guiButtonMainMenu).id == this.btnOptions.id)
+			this.mc.displayGuiScreen((GuiScreen)new GuiOptions((GuiScreen)this, this.mc.gameSettings));
+		if (((GuiButton)guiButtonMainMenu).id == this.btnLanguage.id) 
+			this.mc.displayGuiScreen((GuiScreen)new GuiLanguage((GuiScreen)this, this.mc.gameSettings, this.mc.getLanguageManager()));
 		if (((GuiButton)guiButtonMainMenu).id == this.btnConnectToServer.id) {
 			if (this.favouriteServerIP != null && this.favouriteServerIP.length() > 0) {
 				ServerData serverData = new ServerData(this.favouriteServerName, this.favouriteServerIP, false);
@@ -271,7 +272,8 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 					this.mc.displayGuiScreen((GuiScreen)new GuiConnecting((GuiScreen)this, this.mc, serverData));
 				}
 			}else {
-					this.mc.displayGuiScreen((GuiScreen)new GuiDialogBoxFavouriteServer(this, this.favouriteServerName, this.favouriteServerIP));
+					this.mc.displayGuiScreen((GuiScreen)new GuiDialogBoxFavouriteServer(this,
+							this.favouriteServerName, this.favouriteServerIP));
 			}
 		}
 		if (this.btnAboutForgeMods != null && ((GuiButton)guiButtonMainMenu).id == this.btnAboutForgeMods.id) {
@@ -292,31 +294,33 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
 		drawRect(mouseX + 14, mouseY, mouseX + xSize, mouseY + ySize, 1610612736);
-		GL11.glEnable(3042);
-		GL11.glDisable(3553);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
 		bb.pos((mouseX + 14), (mouseY + ySize), 0.0d).endVertex();
 		bb.pos((mouseX+14), mouseY, 0.0d).endVertex();
 		bb.pos(mouseX, (mouseY + yOffset), 0.0d).endVertex();
 		tessellator.draw();
-		GL11.glEnable(3553);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
 		if (text != null) this.fontRenderer.drawString(text, mouseX + 16, mouseY + 4, 16777215);
 		
 	}
 	
-	@SubscribeEvent
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.buttonPanelLeft.updateButtons(this.updateCounter, partialTicks, mouseX, mouseY);
 		this.buttonPanelRight.updateButtons(this.updateCounter, partialTicks, mouseX, mouseY);
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		if (this.favouriteServerData != null && this.btnConnectToServer != null && this.buttonPanelLeft.isMouseOver(this.btnConnectToServer, this.mc, mouseX, mouseY)) {
+		if (this.favouriteServerData != null && this.btnConnectToServer != null && 
+				this.buttonPanelLeft.isMouseOver(this.btnConnectToServer, this.mc, mouseX, mouseY)) {
 			String text = this.favouriteServerData.serverMOTD;
 			if(this.favouriteServerData.pingToServer > -1L && this.favouriteServerData.populationInfo != null) {
 				text = "Player Count: " + this.favouriteServerData.populationInfo;
 			}
-			drawToolTip(this.buttonPanelLeft.getAdjustedXPosition(this.btnConnectToServer) +150, this.buttonPanelLeft.getAdjustedYPosition(this.btnConnectToServer) + 10, -4, this.fontRenderer.getStringWidth(text) + 18, 16, text);
+			drawToolTip(this.buttonPanelLeft.getAdjustedXPosition(this.btnConnectToServer) +150,
+					this.buttonPanelLeft.getAdjustedYPosition(this.btnConnectToServer) + 10, -4,
+					this.fontRenderer.getStringWidth(text) + 18, 16, text);
 		}
 		List<String> fmlBrandings = ForgeHandler.getBrandings();
 		if (fmlBrandings != null && fmlBrandings.size() > 0 && mouseX < 80 && mouseY > this.height - 16) {
@@ -339,7 +343,8 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 	}
 	
 	public static void registerCustomScreen(String panelName, Class<? extends GuiScreen> customScreenClass, String customScreenText) {
-		if (!panelName.equalsIgnoreCase("left") && !panelName.equalsIgnoreCase("right")) throw new IllegalArgumentException("Invalid panel name specified in registerCustomScreen");
+		if (!panelName.equalsIgnoreCase("left") && 
+				!panelName.equalsIgnoreCase("right")) throw new IllegalArgumentException("Invalid panel name specified in registerCustomScreen");
 		customScreenClasses.add(new CustomScreenEntry(panelName, customScreenClass, customScreenText));
 	}
 	
@@ -355,7 +360,6 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		tessellator.draw();
 	}
 	
-	@SubscribeEvent
 	@Override
 	public boolean renderPanorama(int mouseX, int mouseY, float partialTicks) {
 		try {
@@ -368,13 +372,12 @@ public class GuiPixelMKMainMenu extends GuiMainMenu implements IPanoramaRenderer
 		}
 	}
 
-	@SubscribeEvent
 	@Override
 	public void setPanoramaResolution(Minecraft minecraft, int width, int height) {
 		setWorldAndResolution(minecraft, width, height);
 	}
 
-	@SubscribeEvent
+	
 	@Override
 	public void initPanoramaRenderer() {
 		initGui();

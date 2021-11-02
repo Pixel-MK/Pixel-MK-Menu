@@ -131,9 +131,9 @@ public class GuiButtonMainMenu extends GuiButton{
 	    float var8 = (colour & 0xFF) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder BufferBuilder = tessellator.getBuffer();
-		GL11.glEnable(3042);
-	    GL11.glDisable(3553);
-	    GL11.glBlendFunc(770, 771);
+		GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glDisable(GL11.GL_TEXTURE_2D);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	    GL11.glColor4f(var6, var7, var8, var10);
 		BufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 		BufferBuilder.pos((x1 + offset), y2, 0.0d).endVertex();
@@ -141,8 +141,8 @@ public class GuiButtonMainMenu extends GuiButton{
 		BufferBuilder.pos((x2 - offset), y1, 0.0d).endVertex();
 		BufferBuilder.pos(x1, y1, 0.0d).endVertex();
 		tessellator.draw();
-		GL11.glEnable(3553);
-	    GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	    GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	public int getWidth() {

@@ -1,5 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
-
+/*
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -40,8 +40,8 @@ public abstract class GuiPixelMKSettingsPanel extends AdvancedDrawGui{
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		setTexMapSize(256);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-		GL11.glEnable(3042);
-		GL11.glBlendFunc(770, 771);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		int right = PANEL_LEFT + PANEL_WIDTH;
 		int bottom = PANEL_TOP + PANEL_HEIGHT;
 		this.zLevel = -50.0f;
@@ -58,11 +58,11 @@ public abstract class GuiPixelMKSettingsPanel extends AdvancedDrawGui{
 	protected void drawPanel(int right, int bottom) {
 		PANEL_HEIGHT = Math.max(220, this.height - PANEL_TOP - 2);
 		this.zLevel = -100.0f;
-		GL11.glEnable(2929);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		drawTessellatedModalBorderRect(new ResourceLocation("pixelmkmenu", "textures/gui/guiparts.png"), 256, PANEL_LEFT, PANEL_TOP, right, bottom, 0, 16, 16, 32, 4);
 		zDrop();
 		drawDepthRect(PANEL_LEFT + 1, PANEL_TOP + 1, right - 1, bottom - 1, -2147483648);
-		GL11.glDisable(2929);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 	
 	protected void drawTabs(int mouseX, int mouseY, float partialTicks, boolean mask) {
@@ -209,3 +209,4 @@ public abstract class GuiPixelMKSettingsPanel extends AdvancedDrawGui{
 		} 
 	}
 }
+*/

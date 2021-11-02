@@ -73,9 +73,9 @@ public abstract class AdvancedDrawGui extends GuiScreen implements IAdvancedDraw
 		float blue = (colour & 0xFF) / 255.0f;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
-		GL11.glEnable(3042);;
-		GL11.glDisable(3553);
-		GL11.glBlendFunc(770, 771);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(red, green, blue, alpha);
 		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 		bb.pos(x1, y2, this.zLevel).endVertex();
@@ -83,8 +83,8 @@ public abstract class AdvancedDrawGui extends GuiScreen implements IAdvancedDraw
 		bb.pos(x2, y1, this.zLevel).endVertex();
 		bb.pos(x1, y1, this.zLevel).endVertex();
 		tessellator.draw();
-		GL11.glEnable(3553);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	protected void setTexMapSize(int textureSize) {

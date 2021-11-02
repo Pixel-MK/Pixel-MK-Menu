@@ -37,19 +37,19 @@ public abstract class ScreenTransition {
 	
 	public static void drawFBO(FBO fbo, int x, int y, int x2, int y2, int z, float alpha, boolean blend, double u, double v, double u2, double v2) {
 		if(blend) {
-			GL11.glEnable(3042);
-			GL11.glEnable(3008);
-			GL11.glAlphaFunc(516, 0.0f);
-			GL11.glAlphaFunc(770, 771);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.0f);
+			GL11.glAlphaFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		} else {
-			GL11.glDisable(3042);
-			GL11.glDisable(3008);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDisable(GL11.GL_ALPHA_TEST);
 		}
-		GL11.glShadeModel(7424);
+		GL11.glShadeModel(GL11.GL_FLAT);
 		fbo.draw(x, y, x2, y2, z, alpha, u, v, u2, v2);
-		GL11.glEnable(3008);
-		GL11.glAlphaFunc(516, 0.1f);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 }

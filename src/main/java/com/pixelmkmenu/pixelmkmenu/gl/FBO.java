@@ -9,6 +9,8 @@ import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 
 import net.minecraft.client.renderer.BufferBuilder;
@@ -64,28 +66,28 @@ public class FBO {
 			this.created = true;
 			this.frameBufferWidth = width;
 			this.frameBufferHeight = height;
-			BufferedImage textureImage = new BufferedImage(this.frameBufferWidth, this.frameBufferHeight, 1);
+			BufferedImage textureImage = new BufferedImage(this.frameBufferWidth, this.frameBufferHeight, BufferedImage.TYPE_INT_RGB);
 			this.texture = new DynamicTexture(textureImage);
 			if(useARB) {
 				this.frameBuffer = ARBFramebufferObject.glGenFramebuffers();
 				this.depthBuffer = ARBFramebufferObject.glGenRenderbuffers();
-				ARBFramebufferObject.glBindFramebuffer(36160, this.frameBuffer);
-			    ARBFramebufferObject.glFramebufferTexture2D(36160, 36064, 3553, this.texture.getGlTextureId(), 0);
-			    ARBFramebufferObject.glBindRenderbuffer(36161, this.depthBuffer);
-			    ARBFramebufferObject.glRenderbufferStorage(36161, 33190, this.frameBufferWidth, this.frameBufferHeight);
-			    ARBFramebufferObject.glFramebufferRenderbuffer(36160, 36096, 36161, this.depthBuffer);
-			    ARBFramebufferObject.glBindFramebuffer(36160, 0);
-			    ARBFramebufferObject.glBindRenderbuffer(36161, 0);
+				ARBFramebufferObject.glBindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+			    ARBFramebufferObject.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, this.texture.getGlTextureId(), 0);
+			    ARBFramebufferObject.glBindRenderbuffer(GL30.GL_RENDERBUFFER, this.depthBuffer);
+			    ARBFramebufferObject.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL14.GL_DEPTH_COMPONENT24, this.frameBufferWidth, this.frameBufferHeight);
+			    ARBFramebufferObject.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, this.depthBuffer);
+			    ARBFramebufferObject.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+			    ARBFramebufferObject.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
 			} else {
 				this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
 			    this.depthBuffer = EXTFramebufferObject.glGenRenderbuffersEXT();
-			    EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-			    EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, this.texture.getGlTextureId(), 0);
-			    EXTFramebufferObject.glBindRenderbufferEXT(36161, this.depthBuffer);
-			    EXTFramebufferObject.glRenderbufferStorageEXT(36161, 33190, this.frameBufferWidth, this.frameBufferHeight);
-			    EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36096, 36161, this.depthBuffer);
-			    EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
-			    EXTFramebufferObject.glBindRenderbufferEXT(36161, 0);
+			    EXTFramebufferObject.glBindFramebufferEXT(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+			    EXTFramebufferObject.glFramebufferTexture2DEXT(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, this.texture.getGlTextureId(), 0);
+			    EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, this.depthBuffer);
+			    EXTFramebufferObject.glRenderbufferStorageEXT(GL30.GL_RENDERBUFFER, GL14.GL_DEPTH_COMPONENT24, this.frameBufferWidth, this.frameBufferHeight);
+			    EXTFramebufferObject.glFramebufferRenderbufferEXT(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, this.depthBuffer);
+			    EXTFramebufferObject.glBindFramebufferEXT(GL30.GL_FRAMEBUFFER, 0);
+			    EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, 0);
 			} 
 		}
 		bind();
@@ -95,15 +97,15 @@ public class FBO {
 		if (!supported) return;
 		if (this.created && checkFBO()) {
 			if(useARB) {
-				ARBFramebufferObject.glBindFramebuffer(36160, this.frameBuffer);
-				ARBFramebufferObject.glBindRenderbuffer(36161, this.depthBuffer);
+				ARBFramebufferObject.glBindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+				ARBFramebufferObject.glBindRenderbuffer(GL30.GL_RENDERBUFFER, this.depthBuffer);
 			}else {
-				EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-				EXTFramebufferObject.glBindRenderbufferEXT(36161, this.depthBuffer);
+				EXTFramebufferObject.glBindFramebufferEXT(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+				EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, this.depthBuffer);
 			}
-			GL11.glPushAttrib(2048);
+			GL11.glPushAttrib(GL11.GL_VIEWPORT_BIT);
 			GL11.glViewport(0, 0, this.frameBufferWidth, this.frameBufferHeight);
-			GL11.glClear(16384);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			this.active = true;
 		}
 	}
@@ -111,11 +113,11 @@ public class FBO {
 	public void end() {
 		if (supported && this.active) {
 			if (useARB) {
-				ARBFramebufferObject.glBindFramebuffer(36160,  0);
-				ARBFramebufferObject.glBindRenderbuffer(36161, 0);
+				ARBFramebufferObject.glBindFramebuffer(GL30.GL_FRAMEBUFFER,  0);
+				ARBFramebufferObject.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
 			}else {
-				EXTFramebufferObject.glBindFramebufferEXT(36160,  0);
-				EXTFramebufferObject.glBindRenderbufferEXT(36161, 0);
+				EXTFramebufferObject.glBindFramebufferEXT(GL30.GL_FRAMEBUFFER,  0);
+				EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, 0);
 			}
 			GL11.glPopAttrib();
 			this.active = false;
@@ -141,13 +143,13 @@ public class FBO {
 	
 	private boolean checkFBO() {
 		if(useARB) {
-			ARBFramebufferObject.glBindFramebuffer(36160, this.frameBuffer);
-			ARBFramebufferObject.glBindRenderbuffer(36161, this.depthBuffer);
+			ARBFramebufferObject.glBindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+			ARBFramebufferObject.glBindRenderbuffer(GL30.GL_RENDERBUFFER, this.depthBuffer);
 		}else {
-			EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-		    EXTFramebufferObject.glBindRenderbufferEXT(36161, this.depthBuffer);
+			EXTFramebufferObject.glBindFramebufferEXT(GL30.GL_FRAMEBUFFER, this.frameBuffer);
+		    EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, this.depthBuffer);
 		}
-		int frameBufferStatus = useARB ? ARBFramebufferObject.glCheckFramebufferStatus(36160) : EXTFramebufferObject.glCheckFramebufferStatusEXT(36160);
+		int frameBufferStatus = useARB ? ARBFramebufferObject.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER) : EXTFramebufferObject.glCheckFramebufferStatusEXT(GL30.GL_FRAMEBUFFER);
 		switch (frameBufferStatus) {
 			case 36053: return true;
 			case 36054:
@@ -166,8 +168,8 @@ public class FBO {
 	
 	public void draw(double x, double y, double x2, double y2, double z, float alpha, double u, double v, double u2, double v2) {
 		if (supported && this.created) {
-			GL11.glEnable(3553);
-			GL11.glBindTexture(3553, this.texture.getGlTextureId());
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture.getGlTextureId());
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bb = tessellator.getBuffer();

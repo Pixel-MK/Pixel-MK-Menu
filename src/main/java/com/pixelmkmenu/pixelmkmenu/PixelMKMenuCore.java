@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.pixelmkmenu.pixelmkmenu.events.PixelMKMainMenuEvent;
@@ -119,6 +121,7 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		this.fboEnabled = FBO.detectFBOCapabilities();
 		registerTransition((ScreenTransition)new ScreenTransitionFade());
 		MinecraftForge.EVENT_BUS.register(new PixelMKMainMenuEvent());
+		MinecraftForge.EVENT_BUS.register(this);
 		updateRegisteredTransitions();
 		checkIfInModpack();
 		LOGGER.info("Initialisation Complete");
@@ -179,7 +182,6 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		enableMenuMusic = !getConfig().getBoolProperty(PixelMKMenuConfig.MUTE);
 	}
 	
-	@SubscribeEvent
 	public void OnResourceManagerReload(IResourceManager resourceManager) {
 		if(hasMenuMusic) {
 			SoundEventAccessor accessor = this.mc.getSoundHandler().getAccessor(mc.getAmbientMusicType().getMusicLocation().getSoundName());
@@ -200,9 +202,9 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		return hasMenuMusic;
 	}
 	
-	@SubscribeEvent
-	public void onTick(TickEvent event, Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
+	public void onTick(TickEvent event, float partialTicks, boolean inGame, boolean clock) {
 		ingame = inGame;
+		Minecraft minecraft = Minecraft.getMinecraft();
 		if (clock) {
 			if(minecraft.currentScreen != null && minecraft.currentScreen != panoramaRenderer && panoramaRenderer != null) {
 				panoramaRenderer.updatePanorama();
@@ -215,8 +217,9 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 	public void onRenderWorld(RenderWorldLastEvent event) {}
 	
 	@SubscribeEvent
-	public void onRenderGui(GuiScreenEvent event, GuiScreen currentScreen) {
-		if(event.getGui() == null && this.mc.gameSettings.keyBindPlayerList.isKeyDown()) return;
+	public void onRenderGui(GuiScreenEvent event) {
+		GuiScreen currentScreen = event.getGui();
+		if(currentScreen == null && this.mc.gameSettings.keyBindPlayerList.isKeyDown()) return;
 		if(!getConfig().getBoolProperty(PixelMKMenuConfig.TRANSITIONS)) return;
 		if(!this.fboEnabled) return;
 		if(this.mc.world != null) {
@@ -235,6 +238,7 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 			this.transitionScreen = currentScreen;
 			this.transitionFrames = 0;
 			this.transition = createTransition();
+			LOGGER.info("Transition created");
 		} else {
 			this.transitionFrames++;
 			if(this.transition != null) {
@@ -244,9 +248,9 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 				if(this.transitionPct >= 1.0f) this.transition = null;
 			}
 		}
-		if(!this.swapped && event.getGui() != this) {
+		if(!this.swapped && currentScreen != this) {
 			this.swapped = true;
-			this.swappedScreen = event.getGui();
+			this.swappedScreen = currentScreen;
 		}
 		this.mc.currentScreen = this;
 	}
@@ -289,7 +293,6 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		return this.defaultTransition;
 	}
 	
-	@SubscribeEvent
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if(this.drawingChildScreen) {
@@ -307,7 +310,7 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		this.width = resolution.getScaledWidth();
 		FBO activeFBO = this.transitionFBOs[this.currentFBO];
 		if(this.mc.currentScreen != null && activeFBO != null) {
-			GL11.glPushAttrib(1048575);
+			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 			this.mc.getFramebuffer().unbindFramebuffer();
 			this.proxy.attach(this.mc, activeFBO);
 			activeFBO.begin(this.mc.displayWidth, this.mc.displayHeight);
@@ -316,11 +319,12 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 			this.drawingChildScreen = true;
 			this.mc.currentScreen.drawScreen(mouseX, mouseY, partialTicks);
 			this.drawingChildScreen = false;
-			GL11.glAlphaFunc(516, 0.1f);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
 			activeFBO.end();
 			this.proxy.release(this.mc);
 			this.mc.getFramebuffer().bindFramebuffer(true);
-			if((this.mc.getFramebuffer()).useDepth) EXTFramebufferObject.glBindRenderbufferEXT(36161, (this.mc.getFramebuffer()).depthBuffer);
+			if((this.mc.getFramebuffer()).useDepth) 
+				EXTFramebufferObject.glBindRenderbufferEXT(GL30.GL_RENDERBUFFER, (this.mc.getFramebuffer()).depthBuffer);
 			GL11.glPopAttrib();
 		}
 		this.mc.entityRenderer.setupOverlayRendering();
@@ -336,27 +340,29 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 	protected void clearScreen(int displayWidth, int displayHeight, float zDepth) {
 		GL11.glClearDepth(999.0d);
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		GL11.glClear(16640);
-		GL11.glDisable(3553);
-		GL11.glEnable(3008);
-		GL11.glAlphaFunc(518, 0.0f);
-		GL11.glBlendFunc(1, 0);
-		GL11.glShadeModel(7424);
-		GL11.glEnable(2929);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.0f);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
+		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
-		GL11.glDepthFunc(519);
+		GL11.glDepthFunc(GL11.GL_ALWAYS);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
-		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		bb.color(0.0f, 0.0f, 0.0f, 1.0f);
 		bb.pos(displayWidth, 0.0d, -zDepth).endVertex();
 		bb.pos(0.0d, 0.0d, -zDepth).endVertex();
 		bb.pos(0.0d, displayHeight, -zDepth).endVertex();
 		bb.pos(displayWidth, displayHeight, -zDepth).endVertex();
 		tessellator.draw();
-		GL11.glDepthFunc(515);
-		GL11.glEnable(3008);
-		GL11.glEnable(3553);
+		GL11.glDepthFunc(GL11.GL_LEQUAL);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(true);
 	}
 	
@@ -385,7 +391,6 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		glDisableClipping();
 	}
 	
-	@SubscribeEvent
 	public static void drawBackground(GuiScreen screen, int updateCounter) {
 		Minecraft mc = Minecraft.getMinecraft();
 		boolean inGame = (mc.world != null);;
@@ -396,8 +401,8 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 			panoramaRenderer.renderPanorama(0, 0, lastPartialTicks);
 			mod.drawGradientRect(0, 0, screen.width, screen.height, 1611665424, -1609560048);
 		} else {
-			GL11.glDisable(2896);
-			GL11.glDisable(2912);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_FOG);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bb = tessellator.getBuffer();
 			mc.getTextureManager().bindTexture(GuiScreen.OPTIONS_BACKGROUND);
@@ -419,24 +424,23 @@ public class PixelMKMenuCore extends GuiScreen implements ISelectiveResourceRelo
 		if(yTop != -1) {
 			doubleBuffer.clear();
 			doubleBuffer.put(0.0d).put(1.0d).put(0.0d).put(-yTop).flip();
-			GL11.glClipPlane(12292, doubleBuffer);
-			GL11.glEnable(12292);
+			GL11.glClipPlane(GL11.GL_CLIP_PLANE4, doubleBuffer);
+			GL11.glEnable(GL11.GL_CLIP_PLANE4);
 		}
 		if(yBottom != -1) {
 			doubleBuffer.clear();
 			doubleBuffer.put(0.0d).put(-1.0d).put(0.0d).put(yBottom).flip();
-			GL11.glClipPlane(12293, doubleBuffer);
-			GL11.glEnable(12293);
+			GL11.glClipPlane(GL11.GL_CLIP_PLANE5, doubleBuffer);
+			GL11.glEnable(GL11.GL_CLIP_PLANE5);
 		}
 	}
 	
 	static final void glDisableClipping() {
-		GL11.glDisable(12293);
-		GL11.glDisable(12292);
-		GL11.glDisable(12291);
-		GL11.glDisable(12290);
+		GL11.glDisable(GL11.GL_CLIP_PLANE5);
+		GL11.glDisable(GL11.GL_CLIP_PLANE4);
+		GL11.glDisable(GL11.GL_CLIP_PLANE3);
+		GL11.glDisable(GL11.GL_CLIP_PLANE2);
 	}
 	
-	@SubscribeEvent
 	public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {}
 }

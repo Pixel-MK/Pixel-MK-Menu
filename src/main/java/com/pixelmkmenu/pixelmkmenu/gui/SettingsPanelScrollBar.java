@@ -1,5 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
-
+/*
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -50,12 +50,12 @@ public class SettingsPanelScrollBar {
 	}
 	
 	private void renderBar(GuiPixelMKSettingsPanel panel) {
-		GL11.glEnable(2929);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		panel.drawTessellatedModalBorderRect(new ResourceLocation("pixelmkmenu", "textures/gui/guiparts.png"), 256, this.xPos, this.yPos,
 				this.xPos + this.width, this.yPos + this.height, 0, 16, 16, 32, 4);
 		panel.zDrop();
 		panel.drawDepthRect(this.xPos + 1, this.yPos + 1, this.yPos + this.width - 1, this.yPos + this.height - 1, -2147483648);
-		GL11.glDisable(2929);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 	
 	public void render(GuiPixelMKSettingsPanel panel, int mouseY) {
@@ -69,3 +69,4 @@ public class SettingsPanelScrollBar {
 	}
 
 }
+*/

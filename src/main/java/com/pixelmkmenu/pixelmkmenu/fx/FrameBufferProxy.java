@@ -25,12 +25,15 @@ public class FrameBufferProxy extends Framebuffer{
 		PrivateFields.mcFramebuffer.set(mc, this.oldFramebuffer);
 	}
 	
+	@Override
 	public void createBindFramebuffer(int width, int height) {}
 	
+	@Override
 	public void bindFramebuffer(boolean p_147610_1_) {
 		this.fbo.bind();
 	}
 	
+	@Override
 	public void unbindFramebuffer() {
 		this.fbo.end();
 	}

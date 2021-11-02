@@ -1,5 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
-
+/*
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -70,3 +70,4 @@ public class SettingsPanelMenuTab implements Comparable<SettingsPanelMenuTab> {
 	  }
 
 }
+*/

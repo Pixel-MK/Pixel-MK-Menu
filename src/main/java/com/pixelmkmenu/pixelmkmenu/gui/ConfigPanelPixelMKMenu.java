@@ -1,5 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
-
+/*
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,3 +53,4 @@ public class ConfigPanelPixelMKMenu extends GuiPixelMKSettingsPanel implements I
 	}
 
 }
+*/

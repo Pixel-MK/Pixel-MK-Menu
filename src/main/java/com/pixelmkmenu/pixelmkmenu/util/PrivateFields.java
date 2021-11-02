@@ -44,6 +44,7 @@ import net.minecraft.util.Timer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import paulscode.sound.SoundSystem;
 
 public class PrivateFields<P, T> {
@@ -60,7 +61,7 @@ public class PrivateFields<P, T> {
 	
 	public T get(P instance) {
 		try {
-			return Reflection.getPrivateValue(this.parentClass, instance, this.fieldName);
+			return ReflectionHelper.getPrivateValue(this.parentClass, instance, this.fieldName); //Reflection.getPrivateValue(this.parentClass, instance, this.fieldName);
 		}catch (Exception ex) {
 			if(!this.errorReported) {
 				this.errorReported = true;
@@ -72,7 +73,7 @@ public class PrivateFields<P, T> {
 	
 	public T set(P instance, T value) {
 		try {
-			Reflection.setPrivateValue(this.parentClass, instance, this.fieldName, value);
+			ReflectionHelper.setPrivateValue(this.parentClass, instance, value, this.fieldName);
 		} catch (Exception ex) {
 			if (!this.errorReported) {
 				this.errorReported = true;

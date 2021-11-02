@@ -97,6 +97,6 @@ public enum ObfuscationMapping {
 	}
 	
 	public String getName() {
-		return ModUtil.getObfuscatedFieldName(this.mcpName, this.obfuscatedName, this.seargeName);
+		return this.seargeName;//ModUtil.getObfuscatedFieldName(this.mcpName, this.obfuscatedName, this.seargeName);
 	}
 }

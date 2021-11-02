@@ -1,5 +1,5 @@
 package com.pixelmkmenu.pixelmkmenu.gui;
-
+/*
 import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
@@ -132,7 +132,7 @@ public class SettingsPanelManager {
 	
 	public void renderTabs(GuiPixelMKSettingsPanel panel, int mouseX, int mouseY, float partialTicks, int xPos, int yPos, int spacing, boolean mask) {
 		int tabYPosition = yPos;
-		GL11.glEnable(2929);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		updateTabs();
 		int newWidth = TAB_WIDTH;
 		int newY = 0;
@@ -151,7 +151,7 @@ public class SettingsPanelManager {
 			this.scrollbar.setHeight(GuiPixelMKSettingsPanel.PANEL_HEIGHT - 8);
 			this.scrollbar.render(panel, mouseY);
 		} 
-		GL11.glDisable(2929);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 	
 	public void init(File f) {}
@@ -166,3 +166,4 @@ public class SettingsPanelManager {
 	
 	public void upgradeSettings(String version, File configPath, File oldConfigPath) {}
 }
+*/
