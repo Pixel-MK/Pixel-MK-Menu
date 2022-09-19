@@ -1,6 +1,5 @@
 {
-  "music.pixelmkmenu": {
-    "category": "music",
+  "music_pixelmkmenu": {
     "sounds": [
       {
         "name": "pixelmkmenu:menu1",

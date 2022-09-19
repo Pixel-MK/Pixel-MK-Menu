@@ -1,9 +1,0 @@
-[{
-    "modid": "pixelmkmenu",
-    "name": "Pixel MK Menu",
-    "description": "Menu reskins and retextures for the Pixel MK modpack(s).",
-    "version": "$version",
-    "mcversion": "${mcversion}",
-    "authorList": ["Joe Targett"],
-    "dependencies": ["mod_MinecraftForge"]
-}]
