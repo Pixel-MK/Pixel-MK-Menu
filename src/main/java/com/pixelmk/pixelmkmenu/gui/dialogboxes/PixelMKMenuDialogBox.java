@@ -17,13 +17,10 @@ public class PixelMKMenuDialogBox extends Screen {
     protected int dialogWidth;
     protected int dialogX;
     protected int dialogY;
-    private int lastScreenWidth;
-    private int lastScreenHeight;
     protected Button btnDone;
 	protected boolean centreTitle = true;
 	protected boolean movable = false;
 	protected boolean dragging = false;
-    private String dialogTitle;
 	protected int dialogTitleColour = -256;
 
     public PixelMKMenuDialogBox(Screen parentScreen, int width, int height, String windowTitle) {
@@ -67,8 +64,6 @@ public class PixelMKMenuDialogBox extends Screen {
                 new Button(this.dialogX + this.dialogWidth - 124, this.dialogY + this.dialogHeight - 22,
                         60, 20, new TranslatableComponent("gui.cancel"),
                         (s) -> {this.minecraft.setScreen(this.getParentScreen());}));
-        lastScreenWidth = this.width;
-        lastScreenHeight = this.height;
         onInitDialog();
     }
 

@@ -25,6 +25,8 @@ public class PixelMKMusicManager {
     private static int nextSongDelay = 1;
 
     public static void tick() {
+        if (!PixelMKMenuConfig.CLIENT.playPixelMKMenuMusic.get())
+            return;
         Music minecraftMusic = minecraft.getSituationalMusic();
         Music PixelMKMusic = checkForReplacements(minecraftMusic);
         if (currentMusic != null) {
@@ -67,7 +69,7 @@ public class PixelMKMusicManager {
             if (vanillaPlaying) {
                 stopVanillaMusic();
             }
-            if (PixelMKMenuScreen.btnMute.getMute()) {
+            if (PixelMKMenuScreen.btnMute.getMute() || !PixelMKMenuConfig.CLIENT.playMenuMusic.get()) {
                 stopPlaying();
             }
             if (currentMusic == null) {

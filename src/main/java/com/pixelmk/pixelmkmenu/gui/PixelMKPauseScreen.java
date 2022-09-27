@@ -38,6 +38,7 @@ public class PixelMKPauseScreen extends PauseScreen {
                 OnPress onPress = (Button.OnPress)FOnPress.get(button);
                 GuiButtonMainMenu guiButtonMainMenu = this.buttonPanel.addButton(button.getMessage().getString(), onPress);
                 guiButtonMainMenu.visible = button.visible;
+                guiButtonMainMenu.active = button.active;
             } catch (IllegalArgumentException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

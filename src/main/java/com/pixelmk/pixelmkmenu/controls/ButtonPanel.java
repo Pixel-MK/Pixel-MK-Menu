@@ -121,11 +121,11 @@ public class ButtonPanel extends Button {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int validClick) {
+	public boolean mouseClicked(double mouseX, double mouseY, int pButton) {
 		mouseX -= this.x;
 		mouseY -= this.y;
 		for (GuiButtonMainMenu button : this.buttons) {
-			if (button.mouseClicked(mouseX, mouseY, 0)) {
+			if (button.mouseClicked(mouseX, mouseY, pButton)) {
 				this.pressedButton = button;
 				return true;
 			}
@@ -134,9 +134,9 @@ public class ButtonPanel extends Button {
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int validClick) {
+	public boolean mouseReleased(double mouseX, double mouseY, int pButton) {
 		if(this.pressedButton != null) {
-			this.pressedButton.mouseReleased(mouseX, mouseY, validClick);
+			this.pressedButton.mouseReleased(mouseX, mouseY, pButton);
 			this.pressedButton = null;
 			return true;
 		}

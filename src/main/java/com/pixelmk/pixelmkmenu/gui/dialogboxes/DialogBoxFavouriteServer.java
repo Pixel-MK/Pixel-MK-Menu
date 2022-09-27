@@ -2,20 +2,18 @@ package com.pixelmk.pixelmkmenu.gui.dialogboxes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pixelmk.pixelmkmenu.gui.PixelMKMenuScreen;
+import com.pixelmk.pixelmkmenu.gui.SelectServerScreen;
+import com.pixelmk.pixelmkmenu.helpers.PixelMKMenuConfig;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
 
-    private String serverName;
-    private String serverIP;
-    private PixelMKMenuScreen mainMenu;
     private Button btnPick;
     private EditBox nameEdit;
     private ServerData editingServer;
@@ -23,10 +21,7 @@ public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
 
     public DialogBoxFavouriteServer(PixelMKMenuScreen parentScreen, String serverName, String serverIP) {
         super((Screen) parentScreen, 300, 110, "dialog.favourite.title");
-        this.serverName = serverName;
-        this.serverIP = serverIP;
-        this.mainMenu = parentScreen;
-        this.editingServer = new ServerData(I18n.get("selectServer.defaultName"), "", false);
+        this.editingServer = new ServerData(PixelMKMenuConfig.CLIENT.customServerName.get(), PixelMKMenuConfig.CLIENT.customServerIP.get(), false);
     }
 
     @Override
@@ -39,7 +34,9 @@ public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
     protected void onInitDialog() {
         super.onInitDialog();
         this.btnPick = new Button(this.dialogX + 2, this.dialogY + this.dialogHeight - 22, 60, 20,
-                new TranslatableComponent("dialog.favourite.pick"), null);
+                new TranslatableComponent("dialog.favourite.pick"), (open_gui) -> {
+                    this.minecraft.setScreen(new SelectServerScreen(this));
+                } );
         this.nameEdit = new EditBox(this.minecraft.font, this.dialogX + 100, this.dialogY + 36, this.dialogWidth - 100,
                 16, new TranslatableComponent("addServer.enterName"));
         this.nameEdit.setMaxLength(32);
@@ -51,7 +48,7 @@ public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
         this.ipEdit = new EditBox(this.minecraft.font, this.dialogX + 100, this.dialogY + 56, this.dialogWidth - 100,
                 16, new TranslatableComponent("addServer.enterIp"));
         this.ipEdit.setMaxLength(128);
-        this.nameEdit.setValue(this.editingServer.ip);
+        this.ipEdit.setValue(this.editingServer.ip);
         this.ipEdit.setResponder((p_169302_) -> {
             this.updateAddButtonStatus();
         });
@@ -63,7 +60,7 @@ public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
 
     @Override
     protected void onSubmit() {
-
+        this.setCustomServerIP(this.editingServer);
     }
 
     @Override
@@ -74,6 +71,12 @@ public class DialogBoxFavouriteServer extends PixelMKMenuDialogBox {
 		this.nameEdit.render(pose, mouseX, mouseY, partialTicks);
 		this.ipEdit.render(pose, mouseX, mouseY, partialTicks);
 	}
+
+    public void setCustomServerIP(ServerData serverData) {
+        PixelMKMenuConfig.CLIENT.customServerIP.set(serverData.ip);
+        PixelMKMenuConfig.CLIENT.customServerName.set(serverData.name);
+        this.editingServer = serverData;
+    }
 
     private void updateAddButtonStatus() {
         this.btnDone.active = ServerAddress.isValidAddress(this.ipEdit.getValue())

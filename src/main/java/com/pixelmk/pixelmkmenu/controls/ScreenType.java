@@ -2,8 +2,6 @@ package com.pixelmk.pixelmkmenu.controls;
 
 import java.util.function.Function;
 
-import com.pixelmk.pixelmkmenu.gui.dialogboxes.DialogBoxFavouriteServer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screens.LanguageSelectScreen;

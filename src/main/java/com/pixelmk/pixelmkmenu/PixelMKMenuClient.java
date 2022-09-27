@@ -2,24 +2,24 @@ package com.pixelmk.pixelmkmenu;
 
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Field;
 
 import com.google.gson.stream.JsonReader;
 import com.pixelmk.pixelmkmenu.gui.PixelMKMenuScreen;
 import com.pixelmk.pixelmkmenu.gui.PixelMKPauseScreen;
 import com.pixelmk.pixelmkmenu.helpers.ButtonManager;
+import com.pixelmk.pixelmkmenu.helpers.PixelMKMenuConfig;
 import com.pixelmk.pixelmkmenu.helpers.PixelMKMenuSoundEvents;
 
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class PixelMKMenuClient {
 
@@ -37,7 +37,7 @@ public class PixelMKMenuClient {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         PixelMKMenuSoundEvents.SOUNDS.register(modEventBus);
         checkIfInModpack();
-        // loadConfig();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PixelMKMenuConfig.CLIENT_SPEC);
     }
 
     @SubscribeEvent
@@ -76,14 +76,11 @@ public class PixelMKMenuClient {
                 }
                 jsonReader.endObject();
                 return;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
         PixelMKMenu.LOGGER.info("No modpack file detected, assuming not in modpack.");
         inModpack = false;
 
     }
-
-    // public void LoadConfig(){
-    // Configuration cfg = new Configuration(PixelMKMenu.MODID);
-    // }
 }
