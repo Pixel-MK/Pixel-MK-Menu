@@ -53,11 +53,20 @@ public class GuiButtonMainMenu extends Button {
         this.langKey = langKey;
     }
 
+    public GuiButtonMainMenu(Component message, OnPress onPress) {
+        super(0, 0, 150, 16, message, onPress, Button.NO_TOOLTIP);
+        this.textWidth = INSTANCE.font.width(this.getMessage().getString());
+        this.rightAlign = false;
+    }
+
     @Override
     public Component getMessage() {
         if (this.isHovered)
             return this.hoverMessage;
-        return super.getMessage();
+        if (super.getMessage() != null)
+            return super.getMessage();
+        else
+            return new TranslatableComponent("NONE");
     }
 
     public void updateButton(int updateCounter, float partialTicks, int mouseX, int mouseY) {

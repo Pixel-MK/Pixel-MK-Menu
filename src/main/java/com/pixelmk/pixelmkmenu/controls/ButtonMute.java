@@ -20,7 +20,7 @@ public class ButtonMute extends Button {
     private static final ResourceLocation speaker = new ResourceLocation("pixelmkmenu", "textures/gui/speaker.png");
 
     public ButtonMute(int xPos, int yPos, ActionInstance handler) {
-        super(xPos, yPos, 20, 32, new TranslatableComponent(""), handler, Button.NO_TOOLTIP);
+        super(xPos, yPos, 20, 32, new TranslatableComponent("Mute"), handler, Button.NO_TOOLTIP);
         handler.source = this;
     }
 

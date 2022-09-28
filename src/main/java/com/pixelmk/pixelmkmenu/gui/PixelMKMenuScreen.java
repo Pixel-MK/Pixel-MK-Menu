@@ -8,13 +8,16 @@ import com.google.common.util.concurrent.Runnables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pixelmk.pixelmkmenu.PixelMKMenu;
 import com.pixelmk.pixelmkmenu.PixelMKMenuClient;
+import com.pixelmk.pixelmkmenu.compat.PixelMKMenuCompat;
 import com.pixelmk.pixelmkmenu.controls.ActionInstance;
 import com.pixelmk.pixelmkmenu.controls.ButtonAction;
 import com.pixelmk.pixelmkmenu.controls.ButtonMute;
 import com.pixelmk.pixelmkmenu.controls.ButtonPanel;
 import com.pixelmk.pixelmkmenu.controls.ConnectToButton;
 import com.pixelmk.pixelmkmenu.controls.GuiButtonMainMenu;
+import com.pixelmk.pixelmkmenu.controls.ModUpdateIcon;
 import com.pixelmk.pixelmkmenu.controls.ScreenType;
+import com.pixelmk.pixelmkmenu.event.AddModButtonsEvent;
 import com.pixelmk.pixelmkmenu.fx.RenderTargetProxy;
 import com.pixelmk.pixelmkmenu.fx.ScreenTransition;
 import com.pixelmk.pixelmkmenu.fx.transitions.Fade;
@@ -38,14 +41,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.versions.mcp.MCPVersion;
 
 public class PixelMKMenuScreen extends TitleScreen {
 
 	public static final ResourceLocation BACKGROUND = new ResourceLocation("textures/gui/background.png");
 	private int updateCounter;
-	private int untilNextMusicCheck;
 	private ServerStatusPinger serverPinger;
 	private ButtonPanel buttonPanelLeft;
 	private ButtonPanel buttonPanelRight;
@@ -86,6 +91,7 @@ public class PixelMKMenuScreen extends TitleScreen {
 		IPanoramaRenderer previousRenderer = PixelMKMenu.getPanoramaRenderer();
 		if (previousRenderer != null)
 			this.updateCounter = previousRenderer.getUpdateCounter();
+		MINECRAFT_EDITION = new ResourceLocation("pixelmkmenu", "textures/gui/edition.png");
 	}
 
 	public PixelMKMenuScreen() {
@@ -130,6 +136,8 @@ public class PixelMKMenuScreen extends TitleScreen {
 		}
 		registerTransition((ScreenTransition) new Fade());
 		updateRegisteredTransitions();
+		ObfuscationReflectionHelper.setPrivateValue(TitleScreen.class, this,
+				ModUpdateIcon.init(this, this.btnAboutForgeMods, this.buttonPanelRight), "modUpdateNotification");
 	}
 
 	private void registerTransition(ScreenTransition screenTransition) {
@@ -230,6 +238,10 @@ public class PixelMKMenuScreen extends TitleScreen {
 		this.btnOptions = this.buttonPanelLeft.addButton("menu.options",
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.OPTIONS));
 		this.buttonPanelLeft.addButton("menu.quit", new ActionInstance(ButtonAction.QUIT, null));
+		if (PixelMKMenuCompat.isAnyModLoaded()) {
+			PixelMKMenuCompat.addButtons(this.buttonPanelRight);
+		}
+		MinecraftForge.EVENT_BUS.post(new AddModButtonsEvent(this.buttonPanelRight));
 		this.btnAboutForgeMods = this.buttonPanelRight.addButton("fml.menu.mods",
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.MODS));
 		this.btnLanguage = this.buttonPanelRight.addButton("options.language",
@@ -240,8 +252,6 @@ public class PixelMKMenuScreen extends TitleScreen {
 	public void tick() {
 		super.tick();
 		++this.updateCounter;
-		if (untilNextMusicCheck > 0)
-			--untilNextMusicCheck;
 		if (this.minecraft.screen != this)
 			return;
 		this.updateServerInfo();

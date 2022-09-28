@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -42,7 +43,7 @@ public class PixelMKMenuDialogBox extends Screen {
     protected void init() {
         super.init();
         if (this.parentScreen != null) {
-            Method mInit = ObfuscationReflectionHelper.findMethod(Screen.class, "init");
+            Method mInit = ObfuscationReflectionHelper.findMethod(Screen.class, ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_7856_"));
             mInit.setAccessible(true);
             try {
                 mInit.invoke(getParentScreen());

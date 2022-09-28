@@ -1,7 +1,5 @@
 package com.pixelmk.pixelmkmenu.gui;
 
-import java.lang.reflect.Field;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pixelmk.pixelmkmenu.controls.ActionInstance;
 import com.pixelmk.pixelmkmenu.controls.ButtonAction;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class PixelMKPauseScreen extends PauseScreen {
 
@@ -32,20 +29,10 @@ public class PixelMKPauseScreen extends PauseScreen {
 		this.buttonPanel = new ButtonPanel(ButtonPanel.AnchorType.BottomLeft, 22, 20, 150, 100, 16, this.width, this.height, "main", new ActionInstance(ButtonAction.NONE, null));
         for (Widget widget : this.renderables) {
             Button button = (Button)widget;
-            Field FOnPress = ObfuscationReflectionHelper.findField(Button.class, "onPress");
-            FOnPress.setAccessible(true);
-            try {
-                OnPress onPress = (Button.OnPress)FOnPress.get(button);
+                OnPress onPress = button.onPress;
                 GuiButtonMainMenu guiButtonMainMenu = this.buttonPanel.addButton(button.getMessage().getString(), onPress);
                 guiButtonMainMenu.visible = button.visible;
                 guiButtonMainMenu.active = button.active;
-            } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
         }
 		this.renderables.clear();
         this.children().clear();

@@ -10,12 +10,13 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class PixelMKMenuSoundEvents {
 
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, PixelMKMenu.MODID);
+  public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,
+      PixelMKMenu.MODID);
 
-    public static final RegistryObject<SoundEvent> MUSIC_MENU = register("music_pixelmkmenu");
+  public static final RegistryObject<SoundEvent> MUSIC_MENU = register("music_pixelmkmenu");
 
-    private static RegistryObject<SoundEvent> register(String name) {
-		return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(PixelMKMenu.MODID, name)));
-	}
+  private static RegistryObject<SoundEvent> register(String name) {
+    return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(PixelMKMenu.MODID, name)));
+  }
 
 }

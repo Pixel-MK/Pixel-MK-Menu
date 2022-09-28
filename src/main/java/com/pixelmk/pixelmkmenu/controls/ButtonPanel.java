@@ -8,6 +8,7 @@ import com.pixelmk.pixelmkmenu.gui.CustomScreenEntry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class ButtonPanel extends Button {
     public enum AnchorType{
@@ -25,7 +26,7 @@ public class ButtonPanel extends Button {
 
 	public ButtonPanel(AnchorType anchorType, int xOffset, int yOffset,
 			int width, int height, int buttonSpacing, int containerWidth, int containerHeight, String tag, ActionInstance onPress) {
-		super(0, 0, width, height, null, onPress);
+		super(0, 0, width, height, new TranslatableComponent(tag), onPress);
 		this.anchorType = anchorType;
 	    this.xOffset = xOffset;
 	    this.yOffset = yOffset;

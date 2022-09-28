@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 
 import com.google.gson.stream.JsonReader;
+import com.pixelmk.pixelmkmenu.compat.PixelMKMenuCompat;
+import com.pixelmk.pixelmkmenu.compat.create.Create;
+import com.pixelmk.pixelmkmenu.event.AddModButtonsEvent;
 import com.pixelmk.pixelmkmenu.gui.PixelMKMenuScreen;
 import com.pixelmk.pixelmkmenu.gui.PixelMKPauseScreen;
 import com.pixelmk.pixelmkmenu.helpers.ButtonManager;
@@ -34,6 +37,9 @@ public class PixelMKMenuClient {
     public void load() {
         instance = this;
         MinecraftForge.EVENT_BUS.addListener(this::hijackMenu);
+        if (PixelMKMenuCompat.isModLoaded(PixelMKMenuCompat.Mod.CREATE)) {
+            MinecraftForge.EVENT_BUS.addListener(Create::hijackMenu);
+        }
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         PixelMKMenuSoundEvents.SOUNDS.register(modEventBus);
         checkIfInModpack();
