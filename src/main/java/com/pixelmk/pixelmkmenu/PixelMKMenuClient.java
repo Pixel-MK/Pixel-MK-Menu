@@ -6,7 +6,6 @@ import java.io.FileReader;
 import com.google.gson.stream.JsonReader;
 import com.pixelmk.pixelmkmenu.compat.PixelMKMenuCompat;
 import com.pixelmk.pixelmkmenu.compat.create.Create;
-import com.pixelmk.pixelmkmenu.event.AddModButtonsEvent;
 import com.pixelmk.pixelmkmenu.gui.PixelMKMenuScreen;
 import com.pixelmk.pixelmkmenu.gui.PixelMKPauseScreen;
 import com.pixelmk.pixelmkmenu.helpers.ButtonManager;

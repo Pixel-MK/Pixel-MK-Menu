@@ -43,7 +43,6 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.versions.mcp.MCPVersion;
 
@@ -54,12 +53,7 @@ public class PixelMKMenuScreen extends TitleScreen {
 	private ServerStatusPinger serverPinger;
 	private ButtonPanel buttonPanelLeft;
 	private ButtonPanel buttonPanelRight;
-	private GuiButtonMainMenu btnSinglePlayer;
-	private GuiButtonMainMenu btnMultiplayer;
-	private GuiButtonMainMenu btnOptions;
 	private GuiButtonMainMenu btnAboutForgeMods;
-	private GuiButtonMainMenu btnTexturePack;
-	private GuiButtonMainMenu btnLanguage;
 	private Tooltip modpackTooltip;
 	private Tooltip BrandingsTooltip;
 	private GuiButtonMainMenu btnConnectToServer;
@@ -223,19 +217,18 @@ public class PixelMKMenuScreen extends TitleScreen {
 			this.buttonPanelLeft.addButton("menu.playdemo",
 					new ActionInstance(ButtonAction.DEMO_WORLD, this.checkDemoWorldPresence()));
 		} else {
-			this.btnSinglePlayer = this.buttonPanelLeft.addButton("menu.singleplayer",
+			this.buttonPanelLeft.addButton("menu.singleplayer",
 					new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.SINGLEPLAYER));
-			this.btnMultiplayer = this.buttonPanelRight.addButton("menu.multiplayer",
+			this.buttonPanelRight.addButton("menu.multiplayer",
 					new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.MULTIPLAYER));
 			String buttonText = "Connect to "
 					+ ((PixelMKMenuConfig.CLIENT.customServerName.get() != null
 							&& PixelMKMenuConfig.CLIENT.customServerName.get().length() > 0)
 									? PixelMKMenuConfig.CLIENT.customServerName.get()
 									: "...");
-			this.btnConnectToServer = new ConnectToButton(buttonText, this);
-			this.buttonPanelLeft.addButton(btnConnectToServer);
+			this.buttonPanelLeft.addButton(new ConnectToButton(buttonText, this));
 		}
-		this.btnOptions = this.buttonPanelLeft.addButton("menu.options",
+		this.buttonPanelLeft.addButton("menu.options",
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.OPTIONS));
 		this.buttonPanelLeft.addButton("menu.quit", new ActionInstance(ButtonAction.QUIT, null));
 		if (PixelMKMenuCompat.isAnyModLoaded()) {
@@ -244,7 +237,7 @@ public class PixelMKMenuScreen extends TitleScreen {
 		MinecraftForge.EVENT_BUS.post(new AddModButtonsEvent(this.buttonPanelRight));
 		this.btnAboutForgeMods = this.buttonPanelRight.addButton("fml.menu.mods",
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.MODS));
-		this.btnLanguage = this.buttonPanelRight.addButton("options.language",
+		this.buttonPanelRight.addButton("options.language",
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.LANGUAGE));
 	}
 
