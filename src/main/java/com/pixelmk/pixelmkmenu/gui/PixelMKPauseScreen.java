@@ -19,10 +19,13 @@ public class PixelMKPauseScreen extends PauseScreen {
     private boolean begunTweening;
     private float tweenTime;
 
-    public PixelMKPauseScreen(boolean p_96308_) {
-        super(p_96308_ );
+    public PixelMKPauseScreen(boolean showPauseMenu) {
+        super(showPauseMenu);
     }
 
+    /**
+     * initialise the screeen and convert all buttons to the main menu buttons for the pause screen.
+     */
     @Override
 	protected void init() {
 		super.init();
@@ -39,6 +42,9 @@ public class PixelMKPauseScreen extends PauseScreen {
         this.addRenderableWidget(this.buttonPanel);
 	}
 
+    /**
+     * Renders the screen using tweening and the pose stack.
+     */
     @Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		if(!this.begunTweening) {
@@ -63,6 +69,9 @@ public class PixelMKPauseScreen extends PauseScreen {
 		pose.popPose();
 	}
 
+    /**
+     * On every tick increment the <code>updateCounter</code>
+     */
     @Override
     public void tick(){
 		super.tick();

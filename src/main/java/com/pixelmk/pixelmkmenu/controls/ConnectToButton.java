@@ -14,39 +14,67 @@ public class ConnectToButton extends GuiButtonMainMenu {
     private PixelMKMenuScreen parentScreen;
 
     public ConnectToButton(String langKey, PixelMKMenuScreen parentScreen) {
-        super(langKey, (button) -> {
+        super(langKey, $ -> {
         });
         this.parentScreen = parentScreen;
     }
 
+    /**
+     * Opens the <code>DialogBoxFavouriteServer</code>
+     *
+     * @param wasClicked
+     * @return
+     */
+    private Boolean openDialog(boolean wasClicked) {
+        if (!wasClicked)
+            return false;
+        Minecraft.getInstance()
+                .setScreen(new DialogBoxFavouriteServer(parentScreen,
+                        PixelMKMenuConfig.CLIENT.customServerName.get(),
+                        PixelMKMenuConfig.CLIENT.customServerIP.get()));
+        return true;
+    }
+
+    /**
+     * Connects to the favourite server.
+     *
+     * @param wasClicked
+     * @return
+     */
+    private Boolean connectToServer(boolean wasClicked) {
+        if (!wasClicked)
+            return false;
+        ServerData data = new ServerData(PixelMKMenuConfig.CLIENT.customServerName.get(),
+                PixelMKMenuConfig.CLIENT.customServerIP.get(), false);
+        ConnectScreen.startConnecting(parentScreen, Minecraft.getInstance(),
+                ServerAddress.parseString(data.ip), data);
+        return true;
+    }
+
+    /**
+     * <p>
+     * A method to handle both right and left clicks.
+     * </p>
+     * <p>
+     * If it is left clicked it will try to connect to a server.
+     * </p>
+     * <p>
+     * If it is right clicked it will open the configuration menu to configure the
+     * button.
+     * </p>
+     */
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (this.active && this.visible) {
-            if (pButton == 1) {
-                boolean flag = this.clicked(pMouseX, pMouseY);
-                if (flag) {
-                    this.playDownSound(Minecraft.getInstance().getSoundManager());
-                    Minecraft.getInstance()
-                            .setScreen(new DialogBoxFavouriteServer(parentScreen,
-                                    PixelMKMenuConfig.CLIENT.customServerName.get(),
-                                    PixelMKMenuConfig.CLIENT.customServerIP.get()));
-                    return true;
-                }
-            } else if (pButton == 0) {
-                boolean flag = this.clicked(pMouseX, pMouseY);
-                if (flag) {
-                    this.playDownSound(Minecraft.getInstance().getSoundManager());
-                    ServerData data = new ServerData(PixelMKMenuConfig.CLIENT.customServerName.get(),
-						PixelMKMenuConfig.CLIENT.customServerIP.get(), false);
-				    ConnectScreen.startConnecting(parentScreen, Minecraft.getInstance(), ServerAddress.parseString(data.ip), data);
-                    return true;
-                }
-            }
-
+        if (!(this.active && this.visible))
             return false;
-        } else {
-            return false;
+        if (pButton == 1) {
+            return this.openDialog(this.clicked(pMouseX, pMouseY));
+        } else if (pButton == 0) {
+            if (ServerAddress.isValidAddress(PixelMKMenuConfig.CLIENT.customServerIP.get()))
+                return connectToServer(this.clicked(pMouseX, pMouseY));
+            return this.openDialog(this.clicked(pMouseX, pMouseY));
         }
+        return false;
     }
 
 }

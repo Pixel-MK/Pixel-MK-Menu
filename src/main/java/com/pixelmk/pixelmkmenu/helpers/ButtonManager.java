@@ -10,10 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ButtonManager {
 
-    protected Map<ResourceLocation, GuiButtonMainMenu> buttons = new TreeMap<>();
+  protected Map<ResourceLocation, GuiButtonMainMenu> buttons = new TreeMap<>();
 
-    public Collection<GuiButtonMainMenu> getButtons() {
-		return this.buttons.values();
-	}
+  public Collection<GuiButtonMainMenu> getButtons() {
+    return this.buttons.values();
+  }
 
 }

@@ -78,6 +78,12 @@ public class PixelMKMenuScreen extends TitleScreen {
 	private RenderTargetProxy proxy = new RenderTargetProxy();
 	public static final Music MENU_MUSIC = new Music(PixelMKMenuSoundEvents.MUSIC_MENU.get(), 20, 600, true);
 
+	/**
+	 * Creates an instance of the screen, initialises the <code>ForgeHelper</code>,
+	 * updates the server info before starting, changes the minecraft edition logo
+	 *
+	 * @param fade
+	 */
 	public PixelMKMenuScreen(boolean fade) {
 		this.minecraft = Minecraft.getInstance();
 		ForgeHelper.init();
@@ -92,6 +98,12 @@ public class PixelMKMenuScreen extends TitleScreen {
 		this(true);
 	}
 
+	/**
+	 * <p>Initialses the screen.</p>
+	 * <p>Clears all renderables from parent init and children,
+	 * checks to see if it is a modpack, creates the brandings,
+	 * And sets up the screen</p>
+	 */
 	@Override
 	protected void init() {
 		super.init();
@@ -161,6 +173,9 @@ public class PixelMKMenuScreen extends TitleScreen {
 		return this.defaultTransition;
 	}
 
+	/**
+	 * Adds the button panels, initialises them and adds the mute button.
+	 */
 	private void addDefaultButtons() {
 
 		if (this.buttonPanelLeft == null) {
@@ -176,10 +191,14 @@ public class PixelMKMenuScreen extends TitleScreen {
 		this.addRenderableWidget(this.buttonPanelLeft);
 		this.addRenderableWidget(this.buttonPanelRight);
 
-		btnMute = new ButtonMute(this.width - 24, 4, new ActionInstance(ButtonAction.NONE, null));
+		btnMute = new ButtonMute(this.width - 24, 4);
 		this.addRenderableWidget(btnMute);
 	}
 
+	/**
+	 * Checks to see if demo world is present, if it is returns <code>true</code>
+	 * @return
+	 */
 	private boolean checkDemoWorldPresence() {
 		try {
 			LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = this.minecraft
@@ -212,6 +231,10 @@ public class PixelMKMenuScreen extends TitleScreen {
 		}
 	}
 
+	/**
+	 * <p>Create the panel buttons and assign to correct panels.</p>
+	 * <p><code>AddModButtonsEvent</code> is posted from here.</p>
+	 */
 	protected void initPanelButtons() {
 		if (this.minecraft.isDemo()) {
 			this.buttonPanelLeft.addButton("menu.playdemo",
@@ -241,6 +264,9 @@ public class PixelMKMenuScreen extends TitleScreen {
 				new ActionInstance(ButtonAction.OPEN_GUI, ScreenType.LANGUAGE));
 	}
 
+	/**
+	 * On every tick update the counter, update server info and tick the music manager.
+	 */
 	@Override
 	public void tick() {
 		super.tick();
@@ -253,6 +279,9 @@ public class PixelMKMenuScreen extends TitleScreen {
 		PixelMKMusicManager.tick();
 	}
 
+	/**
+	 * Update server info and server button info.
+	 */
 	private void updateServerInfo() {
 		if (PixelMKMenuConfig.CLIENT.customServerIP.get() != null &&
 				!PixelMKMenuConfig.CLIENT.customServerIP.get().isEmpty() && this.btnConnectToServer != null) {
@@ -265,6 +294,9 @@ public class PixelMKMenuScreen extends TitleScreen {
 		}
 	}
 
+	/**
+	 * Render the screen by first updating buttons in the button panel and then calling the supermethod.
+	 */
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		this.buttonPanelLeft.updateButtons(this.updateCounter, partialTicks, mouseX, mouseY);

@@ -7,17 +7,29 @@ import net.minecraftforge.fml.ModList;
 
 public class PixelMKMenuCompat {
 
+    /**
+     * Enum of mods that have built in compatibility
+     */
     public static enum Mod {
         CREATE,
         QUARK;
     }
 
+    /**
+     * Checks to see if a particular mod in the enum is loaded
+     * @param mod
+     * @return
+     */
     public static Boolean isModLoaded(Mod mod) {
         if (ModList.get().isLoaded(mod.toString().toLowerCase()))
             return true;
         return false;
     }
 
+    /**
+     * Checks to see if any mod in the enum is loaded
+     * @return
+     */
     public static Boolean isAnyModLoaded() {
         for (Mod mod : Mod.values()) {
             if (isModLoaded(mod))
@@ -26,6 +38,10 @@ public class PixelMKMenuCompat {
         return false;
     }
 
+    /**
+     * Adds buttons from these mods into the right button panel
+     * @param buttonPanel
+     */
     public static void addButtons(ButtonPanel buttonPanel) {
         for (Mod mod : Mod.values()) {
             if (isModLoaded(mod)) {

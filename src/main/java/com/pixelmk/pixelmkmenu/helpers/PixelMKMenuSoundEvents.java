@@ -15,6 +15,11 @@ public class PixelMKMenuSoundEvents {
 
   public static final RegistryObject<SoundEvent> MUSIC_MENU = register("music_pixelmkmenu");
 
+  /**
+   * Register all sounds in the deferred register
+   * @param name - name of the sound to register
+   * @return
+   */
   private static RegistryObject<SoundEvent> register(String name) {
     return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(PixelMKMenu.MODID, name)));
   }

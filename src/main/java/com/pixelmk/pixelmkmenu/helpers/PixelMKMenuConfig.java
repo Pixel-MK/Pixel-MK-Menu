@@ -18,14 +18,15 @@ public final class PixelMKMenuConfig {
     private PixelMKMenuConfig() {
     }
 
+    /**
+     * The client config specification.
+     */
     public static final class ClientConfig {
         public final ForgeConfigSpec.BooleanValue playMenuMusic;
         public final ForgeConfigSpec.BooleanValue playPixelMKMenuMusic;
         public final ForgeConfigSpec.ConfigValue<String> customServerIP;
         public final ForgeConfigSpec.ConfigValue<String> customServerName;
         public final ForgeConfigSpec.ConfigValue<Float> transitionRate;
-        // public final ForgeConfigSpec.BooleanValue somniaGui;
-        // public final ForgeConfigSpec.BooleanValue disableRendering;
 
         public ClientConfig(ForgeConfigSpec.Builder builder) {
             builder.push("options");
@@ -47,20 +48,6 @@ public final class PixelMKMenuConfig {
             customServerName = builder
                     .comment("The name of your favourite server")
                     .define("Favourite server name", "");
-            //
-            // somniaGui = builder
-            // .comment("Provides an enhanced sleeping gui")
-            // .define("somniaGui", true);
-            // somniaGuiClockPosition = builder
-            // .comment("The display position of the clock in somnia's enhanced sleeping
-            // gui. Accepted values: right, center, left")
-            // .define("somniaGuiClockPosition", "right");
-            // builder.pop();
-
-            // builder.push("performance");
-            // disableRendering = builder
-            // .comment("Disable rendering while you're asleep")
-            // .define("disableRendering", false);
             builder.pop();
         }
     }

@@ -39,6 +39,11 @@ public class PixelMKMenuDialogBox extends Screen {
         return this.parentScreen;
     }
 
+    /**
+     * <p>Initialises the dialog box and calls init on the parent screen.</p>
+     * <p>Clears the renderables and children.</p>
+     * <p>Creates necessary buttons</p>
+     */
     @Override
     protected void init() {
         super.init();
@@ -68,8 +73,14 @@ public class PixelMKMenuDialogBox extends Screen {
         onInitDialog();
     }
 
+    /**
+     * Not implemented int this class, implemented in child classes
+     */
     protected void onSubmit() {}
 
+    /**
+     * Renders the dialogbox
+     */
     @Override
     public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
         drawParentScreen(pose, 0, 0, partialTick);
@@ -86,6 +97,14 @@ public class PixelMKMenuDialogBox extends Screen {
         super.render(pose, mouseX, mouseY, partialTick);
     }
 
+    /**
+     * Draws the parent screen beneath the dialog box
+     *
+     * @param pose
+     * @param mouseX
+     * @param mouseY
+     * @param partialTick
+     */
     public void drawParentScreen(PoseStack pose, int mouseX, int mouseY, float partialTick) {
         if (getParentScreen() != null) {
             getParentScreen().render(pose, mouseX, mouseY, partialTick);
@@ -95,9 +114,20 @@ public class PixelMKMenuDialogBox extends Screen {
         }
     }
 
+    /**
+     * Not implemented in this class, implemented in child-classes
+     */
     protected void onInitDialog() {
     }
 
+    /**
+     * Not implemented in this class, used for child-classes
+     *
+     * @param pose
+     * @param mouseX
+     * @param mouseY
+     * @param partialTick
+     */
     protected void drawDialog(PoseStack pose, int mouseX, int mouseY, float partialTick) {}
 
 }

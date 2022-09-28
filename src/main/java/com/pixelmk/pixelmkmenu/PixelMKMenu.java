@@ -19,6 +19,9 @@ public class PixelMKMenu {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MODID = "pixelmkmenu";
 
+    /**
+     * Entry point for the mod
+     */
     public PixelMKMenu() {
         if (FMLEnvironment.dist == Dist.CLIENT)
             new PixelMKMenuClient().load();

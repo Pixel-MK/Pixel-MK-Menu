@@ -25,14 +25,44 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class PixelMKMenuClient {
 
+    /**
+     * <p>
+     * Are we in a modpack?
+     * </p>
+     * <p>
+     * <code>true</code> = we are in a modpack
+     * </p>
+     * <p>
+     * <code>false</code> = we are not in a modpack
+     * </p>
+     */
     public static Boolean inModpack;
+
+    /**
+     * The name of the modpack
+     */
     private String ModpackName;
+
+    /**
+     * The version number of the modpack
+     */
     private String ModpackVer;
 
+    /**
+     * The instance of the mod
+     */
     public static PixelMKMenuClient instance;
 
+    /**
+     * The button manager
+     */
     public static final ButtonManager BUTTON_MANAGER = new ButtonManager();
 
+    /**
+     *
+     * Entry point for the Client class.
+     *
+     */
     public void load() {
         instance = this;
         MinecraftForge.EVENT_BUS.addListener(this::hijackMenu);
@@ -45,8 +75,15 @@ public class PixelMKMenuClient {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PixelMKMenuConfig.CLIENT_SPEC);
     }
 
+    /**
+     *
+     * Event subscription that hijacks both the main menu
+     * and pause screens to replace them with the new screens.
+     *
+     * @param e the event
+     */
     @SubscribeEvent
-    public void hijackMenu(ScreenOpenEvent e) {
+    public final void hijackMenu(ScreenOpenEvent e) {
         if (e.getScreen() != null && e.getScreen().getClass() == TitleScreen.class) {
             e.setScreen(new PixelMKMenuScreen());
         } else if (e.getScreen() != null && e.getScreen().getClass() == PauseScreen.class) {
@@ -54,14 +91,42 @@ public class PixelMKMenuClient {
         }
     }
 
+    /**
+     *
+     * Returns name of the modpack if the mod is in one and has a modpack.json
+     *
+     * @return String | null
+     */
     public String getModpackName() {
         return ModpackName;
     }
 
+    /**
+     * Returns version of the modpack if the mod is in one and has a modpack.json
+     *
+     * @return String | null
+     */
     public String getModpackVersion() {
         return ModpackVer;
     }
 
+    /**
+     * <p>
+     * Checks if the mod is in a modpack and has been supplied with a
+     * <code>modpack.json</code>.
+     * </p>
+     *
+     * <p>
+     * Technically the mod doesn't have to be in a modpack but instead just needs to
+     * be
+     * supplied with a <code>modpack.json</code> file.
+     * </p>
+     *
+     * <p>
+     * Updates the static boolean <code>inModpack</code> to true if we are in a
+     * modpack.
+     * </p>
+     */
     public void checkIfInModpack() {
         File modpackJSON = FMLPaths.GAMEDIR.get().resolve("modpack.json").toFile();
         if (modpackJSON.exists() && modpackJSON.canRead()) {

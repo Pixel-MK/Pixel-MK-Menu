@@ -10,14 +10,21 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.internal.BrandingControl;
 
 public class ForgeHelper {
+    /**
+     * The list of FML brandings
+     */
     private static List<String> FMLBrandings = new ArrayList<>();
 
-    public static void init() {
+    public static final void init() {
         replaceBranding();
     }
 
+    /**
+     * Get the brandings for FML/Minecraft and replace them with an empty list.
+     * This is to remove the brandings from the bottom left-hand corner of the main menu
+     */
     @SuppressWarnings("unchecked")
-    public static void replaceBranding() {
+    public static final void replaceBranding() {
         Field FMLBrandingField = ObfuscationReflectionHelper.findField(BrandingControl.class, "brandings");
         FMLBrandingField.setAccessible(true);
         Method BrandingMethod = ObfuscationReflectionHelper.findMethod(BrandingControl.class, "getBrandings",
@@ -33,7 +40,11 @@ public class ForgeHelper {
         }
     }
 
-    public static List<String> getBrandings() {
+    /**
+     * Get the branding list
+     * @return brandings
+     */
+    public static final List<String> getBrandings() {
         return FMLBrandings;
     }
 }

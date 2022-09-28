@@ -7,29 +7,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.google.gson.JsonObject;
-import com.mojang.realmsclient.RealmsMainScreen;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ConnectScreen;
-import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.ServerList;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.levelgen.WorldGenSettings;
 
 public enum ButtonAction {
-    CONNECT_TO_SERVER(
-        ai -> { // Data: Server IP (String)
-            Minecraft mc = Minecraft.getInstance();
-            ServerData data = getOrCreateServerData((String) ai.getData());
-            ServerAddress addr = ServerAddress.parseString((String) ai.getData());
-            ConnectScreen.startConnecting(mc.screen, mc, addr, data);
-        },
-        j -> j.get("data").getAsString()
-    ),
 
     LOAD_WORLD(
         ai -> { // Data: World Name (String)
@@ -49,13 +34,6 @@ public enum ButtonAction {
              }
         },
         j -> j.get("data").getAsBoolean()
-    ),
-
-    REALMS(
-        ai -> {
-            Minecraft.getInstance().setScreen(new RealmsMainScreen(Minecraft.getInstance().screen));
-        },
-        j -> null
     ),
 
     RELOAD(
@@ -115,21 +93,6 @@ public enum ButtonAction {
 
     public Object readData(JsonObject json) {
         return this.reader.apply(json);
-    }
-
-    public static ServerData getOrCreateServerData(String ip) {
-        JoinMultiplayerScreen MultiplayerScreen = new JoinMultiplayerScreen(Minecraft.getInstance().screen);
-        MultiplayerScreen.init(Minecraft.getInstance(), 0, 0);
-        ServerList list = MultiplayerScreen.getServers();
-        for (int i = 0; i < list.size(); i++) {
-            ServerData data = list.get(i);
-            if (data.ip.equals(ip))
-                return data;
-        }
-        ServerData data = new ServerData("Packmenu Managed Server", ip, false);
-        list.add(data);
-        list.save();
-        return data;
     }
 
 }

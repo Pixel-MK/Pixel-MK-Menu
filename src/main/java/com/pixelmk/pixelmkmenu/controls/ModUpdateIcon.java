@@ -11,6 +11,9 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.loading.FMLConfig;
 import net.minecraftforge.versions.forge.ForgeVersion;
 
+/**
+ * Class to eliminate/move the mod update icon diamond, allowing it to be tied to a <code>GuiButtonMainMenu</code>
+ */
 public class ModUpdateIcon extends NotificationModUpdateScreen {
 
     private static final ResourceLocation VERSION_CHECK_ICONS = new ResourceLocation(ForgeVersion.MOD_ID,

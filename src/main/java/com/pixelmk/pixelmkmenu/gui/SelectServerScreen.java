@@ -14,11 +14,22 @@ import net.minecraft.network.chat.TranslatableComponent;
 public class SelectServerScreen extends JoinMultiplayerScreen {
     private DialogBoxFavouriteServer parentScreen;
 
+    /**
+     *
+     * Creates an instance of a select server screen for use in the dialog box
+     *
+     * @param parentScreen
+     */
     public SelectServerScreen(DialogBoxFavouriteServer parentScreen) {
         super((Screen) parentScreen);
         this.parentScreen = parentScreen;
     }
 
+    /**
+     *
+     * Sets up the screen for rendering.
+     *
+     */
     @Override
     protected void init() {
         super.init();

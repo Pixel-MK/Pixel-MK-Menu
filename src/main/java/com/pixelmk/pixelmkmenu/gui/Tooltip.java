@@ -28,6 +28,16 @@ public class Tooltip extends AbstractWidget {
     private Minecraft INSTANCE = Minecraft.getInstance();
     private int textWidth;
 
+    /**
+     *
+     * Creates a tooltip using the given parameters.
+     *
+     * @param textLong
+     * @param textShort
+     * @param xPos
+     * @param yPos
+     * @param yOffset
+     */
     public Tooltip(String textLong, String textShort, int xPos, int yPos, int yOffset) {
         super(xPos, yPos, 0, 0, new TranslatableComponent(textShort));
         this.setMessage(new TranslatableComponent(textShort));
@@ -41,6 +51,18 @@ public class Tooltip extends AbstractWidget {
         this.yOffset = yOffset;
     }
 
+    /**
+     *
+     * Constructs a tooltip using the given parameters
+     *
+     * @param list
+     * @param textShort
+     * @param xPos
+     * @param yPos
+     * @param xSize
+     * @param ySize
+     * @param yOffset
+     */
     public Tooltip(List<String> list, String textShort, int xPos, int yPos, int xSize, int ySize, int yOffset) {
         super(xPos, yPos, 0, 0, new TranslatableComponent(textShort));
         this.setMessage(new TranslatableComponent(textShort));
@@ -56,6 +78,11 @@ public class Tooltip extends AbstractWidget {
             this.TextArray.add(new TranslatableComponent(str));
     }
 
+    /**
+     *
+     * Renders the tooltip
+     *
+     */
     @Override
     public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial) {
         drawString(pose, INSTANCE.font, this.getMessage(), this.x, this.y, 16777215);
@@ -78,19 +105,27 @@ public class Tooltip extends AbstractWidget {
         }
     }
 
+    /**
+     *
+     * Draws the tooltip using the render system and tesselator.
+     *
+     * @param pose
+     * @param mouseX
+     * @param mouseY
+     */
     private void drawTooltip(PoseStack pose, int mouseX, int mouseY) {
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder bb = tessellator.getBuilder();
-        float f3 = (float) (1610612736 >> 24 & 255) / 255.0F;
-        float f = (float) (1610612736 >> 16 & 255) / 255.0F;
-        float f1 = (float) (1610612736 >> 8 & 255) / 255.0F;
-        float f2 = (float) (1610612736 & 255) / 255.0F;
+        float alpha = (float) (1610612736 >> 24 & 255) / 255.0F;
+        float red = (float) (1610612736 >> 16 & 255) / 255.0F;
+        float blue = (float) (1610612736 >> 8 & 255) / 255.0F;
+        float green = (float) (1610612736 & 255) / 255.0F;
         fill(pose, mouseX + 14, mouseY - yOffset, mouseX + xSize, mouseY + ySize - yOffset, 1610612736);
         RenderSystem.enableBlend();
         RenderSystem.disableTexture();
         RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE,
                 DestFactor.ZERO);
-        RenderSystem.setShaderColor(f, f1, f2, f3);
+        RenderSystem.setShaderColor(red, green, blue, alpha);
         bb.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION);
         bb.vertex(pose.last().pose(), (float) (mouseX + 14), (float) (mouseY + ySize - yOffset), 0.0f).endVertex();
 		bb.vertex(pose.last().pose(), (float) (mouseX+14), (float) mouseY - yOffset, 0.0f).endVertex();

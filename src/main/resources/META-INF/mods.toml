@@ -27,14 +27,15 @@ displayName="Pixel MK Menu" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="pixelmkmenu.png" #optional
+logoFile="logo.png" #optional
 # A text field displayed in the mod UI
 credits="Pixel MK Team" #optional
 # A text field displayed in the mod UI
 authors="Pixel MK Team, Joe Targett" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A mod for overhauling several menus to look better and sound better.
+Client side GUI mod for minecraft. It changes the main menu, buttons, the pause menu and other miscellaneous GUIs.
+This mod was made as a mod for the Pixel MK modpack series.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.pixelmkmenu]] #optional
@@ -54,5 +55,17 @@ A mod for overhauling several menus to look better and sound better.
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.pixelmkmenu]]
+    modId="create"
+    mandatory=false
+    versionRange="[0.4,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.pixelmkmenu]]
+    modId="quark"
+    mandatory=false
+    versionRange="[3.2,)"
     ordering="NONE"
     side="BOTH"
