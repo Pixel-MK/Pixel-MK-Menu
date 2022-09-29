@@ -4,7 +4,7 @@
 </p>
 
 <!-- markdownlint-enable -->
-[![javadoc](https://javadoc.io/badge2/com.pixelmk/pixelmkmenu/javadoc.svg)](https://javadoc.io/doc/com.pixelmk/pixelmkmenu)
+[![javadoc](https://javadoc.io/badge2/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2)
 <!-- markdownlint-disable MD002 -->
 
 ## Executive Summary
