@@ -1,72 +1,42 @@
 buildscript {
     repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
+        maven { url 'https://maven.minecraftforge.net' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://maven.parchmentmc.org' }
+        maven { url 'https://repo.spongepowered.org/repository/maven-public' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'net.darkhax.curseforgegradle', name: 'CurseForgeGradle', version: '1.0.10'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-plugins {
-    id 'eclipse'
-    id 'maven-publish'
-}
+
+def buildNumber = 0
+version = "${project.version}.${buildNumber}".toString()
+group = "io.github.apolo49.pixelmk"
+
+apply plugin: 'maven-publish'
+apply from: 'gradle/java.gradle'
+apply from: 'gradle/signing.gradle'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '1.0'
-group = 'com.pixelmk.pixelmkmenu' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'pixelmkmenu'
+archivesBaseName = "pixelmkmenu-${minecraft_version}"
 
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // official   MCVersion             Official field/method names from Mojang mapping files
-    // parchment  YYYY.MM.DD-MCVersion  Open community-sourced parameter names and javadocs layered on top of official
-    //
-    // You must be aware of the Mojang license when using the 'official' or 'parchment' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Parchment is an unofficial project maintained by ParchmentMC, separate from MinecraftForge
-    // Additional setup is needed to use their mappings: https://github.com/ParchmentMC/Parchment/wiki/Getting-Started
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
     // mappings channel: 'official', version: '1.18.2'
     mappings channel: 'parchment', version: '2022.09.04-1.18.2'
-
-    // Currently, this location cannot be changed from the default.
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'pixelmkmenu'
-
             mods {
                 pixelmkmenu {
                     source sourceSets.main
@@ -76,14 +46,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'pixelmkmenu'
-
             mods {
                 pixelmkmenu {
                     source sourceSets.main
@@ -91,27 +56,11 @@ minecraft {
             }
         }
 
-        // This run config launches GameTestServer and runs all registered gametests, then exits.
-        // By default, the server will crash when no gametests are provided.
-        // The gametest system is also enabled by default for other run configs under the /test command.
         gameTestServer {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'pixelmkmenu'
-
             mods {
                 pixelmkmenu {
                     source sourceSets.main
@@ -119,100 +68,152 @@ minecraft {
             }
         }
 
-        data {
             workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'pixelmkmenu', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
             mods {
                 pixelmkmenu {
                     source sourceSets.main
                 }
             }
         }
-    }
-}
-
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-}
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+
     minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
-
-    // Real mod deobf dependency examples - these get remapped to your current mappings
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-
     implementation fg.deobf("curse.maven:create-328085:4007544-sources")
     implementation fg.deobf("curse.maven:quark-243121:3840125-sources")
 
-    // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-// Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "pixelmkmenu",
-                "Specification-Vendor"    : "pixelmk",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "pixelmk",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+processResources {
+
+    def buildProps = project.properties.clone()
+
+    filesMatching(['pack.mcmeta']) {
+
+        expand buildProps
+    }
+
+    // Replaces FML's magic file.jarVersion string with the correct version at
+    // build time.
+    buildProps.put('file', [jarVersion: project.version])
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+
+        expand buildProps
     }
 }
 
-// Example configuration to allow publishing using the maven-publish plugin
-// This is the preferred method to reobfuscate your jar file
 jar.finalizedBy('reobfJar')
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// publish.dependsOn('reobfJar')
 
+// -- MAVEN PUBLISHING --
 publishing {
+
     publications {
+
         mavenJava(MavenPublication) {
+            pom {
+                name = 'Pixel MK Menu'
+                description = 'Minecraft mod to transform GUIs'
+                url = "https://github.com/apolo49/Pixel-MK-Menu/"
+                packaging = 'jar'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'apolo49'
+                        name = 'Joe Targett'
+                        email = 'joe.targett@outlook.com'
+                        organization = "Pixel MK"
+                        organizationUrl = "https://github.com/apolo49"
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/apolo49/Pixel-MK-Menu.git'
+                    developerConnection = 'scm:git:ssh://github.com:apolo49/Pixel-MK-Menu.git'
+                    url = 'https://github.com/apolo49/Pixel-MK-Menu/tree/1.18.2'
+                }
+            }
+
+            groupId = project.group
+            artifactId project.archivesBaseName
+            version version
+
+            // Base mod archive.
             artifact jar
+
+            // Adds the sources as an artifact.
+            artifact project.sourcesJar {
+                classifier 'sources'
+            }
+
+            // Adds the javadocs as an artifact.
+            artifact project.javadocJar {
+                classifier 'javadoc'
+            }
         }
     }
+
     repositories {
+
         maven {
+            name "MavenCentral"
+
+            // Sets maven credentials if they are provided. This is generally
+            // only used for external/remote uploads.
+            if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+
+                credentials {
+
+                    username findProperty('mavenUsername')
+                    password findProperty('mavenPassword')
+                }
+            }
+
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        }
+        maven {
+            name "McModsRepo"
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+// Forge's Jar Signer
+def canSignJar = project.hasProperty('keyStore') && project.hasProperty('keyStorePass') && project.hasProperty('keyStoreKeyPass') && project.hasProperty('keyStoreAlias')
+
+task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: jar) {
+
+    onlyIf {
+
+        canSignJar
+    }
+
+    if (canSignJar) {
+
+        keyStore = project.findProperty('keyStore')
+        alias = project.findProperty('keyStoreAlias')
+        storePass = project.findProperty('keyStorePass')
+        keyPass = project.findProperty('keyStoreKeyPass')
+        inputFile = jar.archivePath
+        outputFile = jar.archivePath
+
+        build.dependsOn signJar
+    }
+
+    else {
+
+        project.logger.warn('Jar signing is disabled for this build. One or more keyStore properties are not specified.')
+    }
 }

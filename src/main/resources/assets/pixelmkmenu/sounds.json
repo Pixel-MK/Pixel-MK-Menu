@@ -16,6 +16,22 @@
       {
         "name": "pixelmkmenu:menu4",
         "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu5",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu6",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu7",
+        "stream": true
+      },
+      {
+        "name": "pixelmkmenu:menu8",
+        "stream": true
       }
     ]
   }
