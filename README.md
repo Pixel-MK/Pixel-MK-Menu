@@ -84,7 +84,9 @@ The way to add this is documented [here](#adding-buttons)
 
 ![Pause Menu](/readmeResources/PauseMenu.png "Pause Menu")
 
-The pause menu has been redesigned to take up a smaller space of the screen and no longer dims the background meaning that it is easier to see you surroundings when online.
+The pause menu has been redesigned to take up a smaller space of the screen and
+no longer dims the background meaning that it is easier to see you surroundings
+when online.
 The pause menu also has animations associated with it.
 
 ## Adding Buttons
