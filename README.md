@@ -4,7 +4,13 @@
 </p>
 
 <!-- markdownlint-enable -->
-[![javadoc](https://javadoc.io/badge2/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2)
+[![Javadoc](https://javadoc.io/badge2/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2)
+![Forge Modloader](https://img.shields.io/badge/mod%20loader-forge-1976d2?style=for-the-badge)
+![Client Only](https://img.shields.io/badge/environment-client-1976d2?style=for-the-badge)
+[![Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dapolo49%26type%3Dpatrons&style=for-the-badge)](https://shieldsio-patreon.vercel.app/api/?username=apolo49&type=patrons)
+[![Available for Minecraft 1.18](https://img.shields.io/badge/Available%20for-MC%201.18-c70039?style=for-the-badge)](https://www.curseforge.com/minecraft/mc-mods/pixel-mk-menu)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/apolo49?color=red&logo=github&style=for-the-badge)](https://github.com/sponsors/apolo49)
+[![Lines of code](https://img.shields.io/tokei/lines/github/apolo49/Pixel-MK-Menu?logo=github&style=for-the-badge)](https://github.com/apolo49/Pixel-MK-Menu)
 <!-- markdownlint-disable MD002 -->
 
 ## Executive Summary
@@ -21,6 +27,7 @@ buttons, the pause menu and other miscellaneous GUIs.
   - [Main Menu](#main-menu)
     - [Default Menu](#default-menu)
     - [With Create and Quark](#with-create-and-quark)
+  - [Pause Menu](#pause-menu)
 - [Adding Buttons](#adding-buttons)
 - [Credits](#credits)
 - [License](#license)
@@ -73,12 +80,19 @@ and approved through the issue tracker.
 
 The way to add this is documented [here](#adding-buttons)
 
+### Pause Menu
+
+![Pause Menu](/readmeResources/PauseMenu.png "Pause Menu")
+
+The pause menu has been redesigned to take up a smaller space of the screen and no longer dims the background meaning that it is easier to see you surroundings when online.
+The pause menu also has animations associated with it.
+
 ## Adding Buttons
 
 To add a button it is as simple as catching an event (`AddModButtonsEvent` event)
 on the Forge Event Bus.
 
-The file for this event can be found at [AddModButtonsEvent.java](/src/main/java/com/pixelmk/pixelmkmenu/event/AddModButtonsEvent.java).
+The file for this event can be found at [AddModButtonsEvent.java](/src/main/java/io/github/pixelmk/pixelmkmenu/event/AddModButtonsEvent.java).
 
 The code used would be something along the lines of
 
