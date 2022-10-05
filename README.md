@@ -37,7 +37,7 @@ buttons, the pause menu and other miscellaneous GUIs.
 The Minecraft main menu and other menus aren't that modern, sleek or beautiful.
 We can see due to the popularity of menu editor mods and GUI redesign mods and
 other mod GUIs that the menus leave a lot to be desired. This desire to change the
-menu and the soon-to-be-realeased Pixel MK 4 modpack leaves a hole to be filled
+menu and the soon-to-be-released Pixel MK 4 modpack leaves a hole to be filled
 that was filled with Pixel MK 1 and 2's Voxel Menu mod that was brought over from
 the Voxel Modpack.
 

@@ -12,10 +12,12 @@ import io.github.pixelmk.pixelmkmenu.gui.PixelMKPauseScreen;
 import io.github.pixelmk.pixelmkmenu.helpers.ButtonManager;
 import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMenuConfig;
 import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMenuSoundEvents;
+import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMusicManager;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -66,6 +68,7 @@ public class PixelMKMenuClient {
     public void load() {
         instance = this;
         MinecraftForge.EVENT_BUS.addListener(this::hijackMenu);
+        MinecraftForge.EVENT_BUS.addListener(this::runMusicManager);
         if (PixelMKMenuCompat.isModLoaded(PixelMKMenuCompat.Mod.CREATE)) {
             MinecraftForge.EVENT_BUS.addListener(Create::hijackMenu);
         }
@@ -89,6 +92,17 @@ public class PixelMKMenuClient {
         } else if (e.getScreen() != null && e.getScreen().getClass() == PauseScreen.class) {
             e.setScreen(new PixelMKPauseScreen(true));
         }
+    }
+
+    /**
+     *
+     * Event to override run the music manager so no vanilla sounds get played unless configured
+     *
+     * @param e
+     */
+    @SubscribeEvent
+    public final void runMusicManager(ClientTickEvent e) {
+        PixelMKMusicManager.tick();
     }
 
     /**

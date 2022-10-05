@@ -10,11 +10,11 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
         classpath group: 'net.darkhax.curseforgegradle', name: 'CurseForgeGradle', version: '1.0.10'
+        classpath group: "net.galacticraft.publish.curseforge", name: 'curseforge', version: '1.0.0'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 
-def buildNumber = 0
 version = "${project.version}.${buildNumber}".toString()
 group = "io.github.apolo49.pixelmk"
 
@@ -23,6 +23,7 @@ apply from: 'gradle/java.gradle'
 apply from: 'gradle/signing.gradle'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: "net.galacticraft.publish.curseforge"
 
 archivesBaseName = "pixelmkmenu-${minecraft_version}"
 
@@ -186,6 +187,7 @@ publishing {
 
             url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
+
         maven {
             name "McModsRepo"
             url "file://${project.projectDir}/mcmodsrepo"
@@ -220,3 +222,19 @@ task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: ja
         project.logger.warn('Jar signing is disabled for this build. One or more keyStore properties are not specified.')
     }
 }
+
+    curseforge {
+	    // debug()
+	    file(jar) // or file(customJar, 'CustomName')
+	    projectId('682844')// or projectId(123456)
+	    releaseType('release')
+	    gameVersions('1.18.2')
+	    changelog('changlogs/CHANGELOG.md')
+	    changelogType('text')
+	    dependencies {
+		    optional('quark')
+            optional('create')
+	    }
+    }
+
+publishToCurseforge.dependsOn publish

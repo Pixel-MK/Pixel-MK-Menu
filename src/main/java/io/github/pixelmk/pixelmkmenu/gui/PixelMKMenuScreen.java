@@ -276,7 +276,6 @@ public class PixelMKMenuScreen extends TitleScreen {
 		this.updateServerInfo();
 		if (this.serverPinger != null)
 			this.serverPinger.tick();
-		PixelMKMusicManager.tick();
 	}
 
 	/**
