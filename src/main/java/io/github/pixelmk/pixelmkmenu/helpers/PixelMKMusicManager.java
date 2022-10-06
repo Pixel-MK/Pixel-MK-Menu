@@ -73,6 +73,7 @@ public class PixelMKMusicManager {
             if (vanillaPlaying) {
                 stopVanillaMusic();
             }
+            if (PixelMKMenuScreen.btnMute == null) return;
             if (PixelMKMenuScreen.btnMute.getMute() || !PixelMKMenuConfig.CLIENT.playMenuMusic.get()) {
                 stopPlaying();
             }

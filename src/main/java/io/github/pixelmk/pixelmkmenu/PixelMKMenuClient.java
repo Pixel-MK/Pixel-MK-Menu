@@ -13,6 +13,7 @@ import io.github.pixelmk.pixelmkmenu.helpers.ButtonManager;
 import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMenuConfig;
 import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMenuSoundEvents;
 import io.github.pixelmk.pixelmkmenu.helpers.PixelMKMusicManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraftforge.client.event.ScreenOpenEvent;
@@ -102,7 +103,8 @@ public class PixelMKMenuClient {
      */
     @SubscribeEvent
     public final void runMusicManager(ClientTickEvent e) {
-        PixelMKMusicManager.tick();
+        if (Minecraft.getInstance().screen != null && Minecraft.getInstance().screen.getClass() == PixelMKMenuScreen.class)
+            PixelMKMusicManager.tick();
     }
 
     /**
