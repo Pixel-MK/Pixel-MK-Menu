@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish'
     id 'checkstyle'
     id 'pmd'
+    id 'signing'
     id 'net.ltgt.errorprone' version '4.+'
     id 'net.ltgt.nullaway' version '2.+'
     id "com.github.spotbugs" version "6.+"
@@ -226,15 +227,64 @@ tasks.withType(ProcessResources).configureEach {
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
-        register('mavenJava', MavenPublication) {
+        mavenJava(MavenPublication) {
             from components.java
+            pom {
+                name = 'Pixel MK Menu'
+                description = 'Minecraft mod to transform GUIs'
+                url = "https://github.com/Pixel-MK/Pixel-MK-Menu/"
+                packaging = 'jar'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'apolo49'
+                        name = 'Joe Targett'
+                        email = 'joe.targett@outlook.com'
+                        organization = "Pixel MK"
+                        organizationUrl = "https://github.com/Pixel-MK"
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Pixel-MK/Pixel-MK-Menu.git'
+                    developerConnection = 'scm:git:ssh://github.com:Pixel-MK/Pixel-MK-Menu.git'
+                    url = 'https://github.com/Pixel-MK/Pixel-MK-Menu/tree/1.20.6'
+                }
+            }
+            groupId = project.group
+            artifactId project.archivesBaseName
+            version version
         }
     }
     repositories {
+        // maven {
+        //     name "MavenCentral"
+
+        //     // Sets maven credentials if they are provided. This is generally
+        //     // only used for external/remote uploads.
+        //     if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+
+        //         credentials {
+
+        //             username findProperty('mavenUsername')
+        //             password findProperty('mavenPassword')
+        //         }
+        //     }
+
+        //     url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        // }
         maven {
             url "file://${project.projectDir}/repo"
         }
     }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
 
 jar {
@@ -287,6 +337,9 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelog = findProperty('changelog')
     mainFile.releaseType = findProperty('mod_release_type')
     mainFile.changelogType = 'markdown'
+    mainFile.addModLoader('neoforge')
+
+    mainFile.addGameVersion(findProperty('minecraft_version'))
 
 
     // Add sources Jar to upload
@@ -294,6 +347,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 
     // Add JavaDoc Jar to upload
     mainFile.withAdditionalFile(javadocJar)
+    debugMode = true
 }
 
 modrinth {
@@ -306,5 +360,8 @@ modrinth {
     loaders = ["neoforge"]
     additionalFiles = [sourcesJar, javadocJar]
     changelog = findProperty('changelog')
+    debugMode = true
 }
 
+publish.dependsOn tasks.modrinth
+publish.dependsOn publishCurseForge

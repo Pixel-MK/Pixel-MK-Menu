@@ -4,9 +4,9 @@
 </p>
 
 
-[![GitHub License](https://img.shields.io/github/license/apolo49/pixel-mk-menu?style=for-the-badge)](https://github.com/apolo49/Pixel-MK-Menu/blob/master/LICENSE.md)
+[![GitHub License](https://img.shields.io/github/license/apolo49/pixel-mk-menu?style=for-the-badge)](https://github.com/Pixel-MK/Pixel-MK-Menu/blob/master/LICENSE.md)
 ![Maintenance](https://img.shields.io/maintenance/yes/2024?style=for-the-badge)
-[![Javadoc](https://javadoc.io/badge2/io.github.apolo49.pixelmk/pixelmkmenu-1.20.6/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.apolo49.pixelmk/pixelmkmenu-1.20.6)
+[![Javadoc](https://javadoc.io/badge2/io.github.pixel-mk/pixelmkmenu/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.pixel-mk/pixelmkmenu)
 ![Forge Modloader](https://img.shields.io/badge/mod%20loader-neoforge-1976d2?style=for-the-badge)
 ![Client Only](https://img.shields.io/badge/environment-client-1976d2?style=for-the-badge)
 [![Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dapolo49%26type%3Dpatrons&style=for-the-badge)](https://shieldsio-patreon.vercel.app/api/?username=apolo49&type=patrons)
@@ -15,8 +15,8 @@
 ![Modrinth Game Versions](https://img.shields.io/modrinth/game-versions/a2TIbRUs?style=for-the-badge&logo=modrinth)
 [![Modrinth Version](https://img.shields.io/modrinth/v/a2TIbRUs?style=for-the-badge&logo=modrinth)](https://modrinth.com/project/pixel-mk-menu)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/apolo49?color=red&logo=github&style=for-the-badge)](https://github.com/sponsors/apolo49)
-[![Lines of code](https://img.shields.io/tokei/lines/github/apolo49/Pixel-MK-Menu?logo=github&style=for-the-badge)](https://github.com/apolo49/Pixel-MK-Menu)
-[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.apolo49.pixelmk/pixelmkmenu-1.18.2?style=for-the-badge&logo=apachemaven)](https://repo1.maven.org/maven2/io/github/apolo49/pixelmk/pixelmkmenu-1.18.2/)
+[![Lines of code](https://img.shields.io/tokei/lines/github/Pixel-MK/Pixel-MK-Menu?logo=github&style=for-the-badge)](https://github.com/Pixel-MK/Pixel-MK-Menu)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.pixel-mk/pixelmkmenu?style=for-the-badge&logo=apachemaven)](https://repo1.maven.org/maven2/io/github/pixel-mk/pixelmkmenu/)
 
 <!-- markdownlint-enable -->
 

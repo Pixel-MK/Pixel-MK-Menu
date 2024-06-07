@@ -36,6 +36,7 @@ public class PixelMKMenuClient {
 
   /** Shared mod instance. */
   private static final PixelMKMenuClient INSTANCE = new PixelMKMenuClient();
+
   /** NeoForge Brandings. */
   private static List<String> nfBrandings = new ArrayList<>();
 
@@ -56,9 +57,7 @@ public class PixelMKMenuClient {
 
   private PixelMKMenuClient() {}
 
-  /**
-   * Does nothing.
-   */
+  /** Does nothing. */
   @Deprecated
   @SuppressWarnings("InlineMeSuggester")
   public void load() {
