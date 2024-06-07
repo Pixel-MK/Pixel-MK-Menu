@@ -73,10 +73,10 @@ public class PixelMKRenderType {
    * Get tooltip RenderType.
    *
    * <ul>
-   *  <li>Default Vertex Format - Position/Color</li>
-   *  <li>Mode - Triangles</li>
-   *  <li>Does not affect crumbling or sort on upload</li>
-   *  <li>Uses same state as GUI <code>RenderType</code>.</li>
+   *   <li>Default Vertex Format - Position/Color
+   *   <li>Mode - Triangles
+   *   <li>Does not affect crumbling or sort on upload
+   *   <li>Uses same state as GUI <code>RenderType</code>.
    * </ul>
    *
    * @return tooltip <code>RenderType</code>

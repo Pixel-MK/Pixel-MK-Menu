@@ -68,9 +68,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     PixelMKMenuClient.replaceBranding();
   }
 
-  /**
-   * Default Constructor.
-   */
+  /** Default Constructor. */
   public TitleScreen() {
     this(true);
   }

@@ -49,14 +49,19 @@ public class ButtonPanel extends Button {
 
   /** Where to anchor the panel to the screen. */
   protected AnchorType anchorType = AnchorType.BottomLeft;
+
   /** List of buttons in the panel. */
   protected List<TitleScreenButton> buttons = new ArrayList<TitleScreenButton>();
+
   /** Previously/currently pressed button in the panel. */
   @Nullable protected TitleScreenButton pressedButton;
+
   /** Offset on the horizontal. */
   private int offsetX;
+
   /** Offset on the vertical. */
   private int offsetY;
+
   /** Spacing between each button. */
   private int buttonSpacing = 16;
 
