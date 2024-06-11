@@ -34,3 +34,14 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY_RING_FILE }}
         run: ./gradlew publish -Pmod_version=${{ github.ref_name }}
+
+      - name: Set variables
+        run: |
+          MINECRAFT_VER=$(grep -oP '(?<=minecraft_version\=).*' gradle.properties)
+          echo "MINECRAFT_VER=$MINECRAFT_VER" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./repo/io/github/pixel-mk/pixelmkmenu-${{ env.MINECRAFT_VER }}/${{ github.ref_name }}/pixelmkmenu-${{ env.MINECRAFT_VER }}-${{ github.ref_name }}*.jar
