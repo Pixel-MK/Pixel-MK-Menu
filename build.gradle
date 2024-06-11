@@ -284,7 +284,12 @@ publishing {
 }
 
 signing {
-    sign publishing.publications.mavenJava
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign jar
+    sign sourcesJar
+    sign javadocJar
 }
 
 jar {
@@ -365,3 +370,5 @@ modrinth {
 
 publish.dependsOn tasks.modrinth
 publish.dependsOn publishCurseForge
+publishCurseForge.dependsOn signJar
+tasks.modrinth.dependsOn signJar
