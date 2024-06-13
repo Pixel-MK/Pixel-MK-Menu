@@ -17,7 +17,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package sounds.music;
+package io.github.pixelmk.pixelmkmenu.music;
 
 import io.github.pixelmk.pixelmkmenu.PixelMKMenu;
 import net.minecraft.core.registries.BuiltInRegistries;

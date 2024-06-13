@@ -23,6 +23,7 @@ import io.github.pixelmk.pixelmkmenu.PixelMKMenuClient;
 import io.github.pixelmk.pixelmkmenu.gui.components.ButtonPanel;
 import io.github.pixelmk.pixelmkmenu.gui.components.TitleScreenMuteButton;
 import io.github.pixelmk.pixelmkmenu.gui.components.Tooltip;
+import io.github.pixelmk.pixelmkmenu.music.MenuMusic;
 import javax.annotation.Nonnull;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
@@ -40,7 +41,6 @@ import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.gui.ModListScreen;
-import sounds.music.MenuMusic;
 
 /**
  * Pixel MK Menu Title Screen.
