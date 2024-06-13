@@ -11,15 +11,12 @@ Very minor half finished port.
 
 ### Added
 
-- Port to 1.20.6.
-- Port to NeoForge
+- Start menu overhauled and added.
+- Main Menu music. (Only works on main menu though, can be jarring)
+- Mute button on main menu.
 
-### Removed
+### Planned
 
-- (temporarily) Main menu music
-- (temporarily) Start menu overhaul
-- (temporarily) Modpack detection
-- (temporarily) Other menu changes
-- (temporarily) Quark and Create compat
-- (temporarily) AddButtons event
-- (temporarily) Connect To... button
+- Get music working across entire main menu
+- Connect to... button
+- Modpack detection
