@@ -19,7 +19,7 @@
 
 package io.github.pixelmk.pixelmkmenu.eventlisteners;
 
-import com.mojang.logging.LogUtils;
+import io.github.pixelmk.pixelmkmenu.PixelMKMenu;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.neoforged.api.distmarker.Dist;
@@ -29,12 +29,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 /** Listener for screen open events to hijack the title screen and pause screen. */
-@EventBusSubscriber(modid = "pixelmkmenu")
+@EventBusSubscriber(modid = PixelMKMenu.MODID, value = Dist.CLIENT)
 @OnlyIn(Dist.CLIENT)
-public class ScreenOpenListener {
+public final class ScreenOpenListener {
 
   /** Default Constructor. */
-  ScreenOpenListener() {}
+  private ScreenOpenListener() {}
 
   /**
    * Hijack the title screen when title screen is opened.
@@ -45,7 +45,7 @@ public class ScreenOpenListener {
    * @param event screen open event.
    */
   @SubscribeEvent
-  public static void onTitleScreenOpen(ScreenEvent.Opening event) {
+  public static void onTitleScreenOpen(final ScreenEvent.Opening event) {
     if (event.getNewScreen() instanceof TitleScreen) {
       event.setNewScreen(new io.github.pixelmk.pixelmkmenu.gui.screens.TitleScreen());
     }
@@ -60,9 +60,9 @@ public class ScreenOpenListener {
    * @param event screen open event.
    */
   @SubscribeEvent
-  public static void onPauseScreenOpen(ScreenEvent.Opening event) {
+  public static void onPauseScreenOpen(final ScreenEvent.Opening event) {
     if (event.getNewScreen() instanceof PauseScreen) {
-      LogUtils.getLogger().info("Pause Screen Opened");
+      event.setNewScreen(new io.github.pixelmk.pixelmkmenu.gui.screens.PauseScreen());
     }
   }
 }

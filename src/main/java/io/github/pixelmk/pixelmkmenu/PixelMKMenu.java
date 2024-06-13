@@ -20,13 +20,13 @@
 package io.github.pixelmk.pixelmkmenu;
 
 import com.mojang.logging.LogUtils;
+import io.github.pixelmk.pixelmkmenu.sounds.music.MenuMusic;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-// import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -37,12 +37,18 @@ import org.slf4j.Logger;
 @Mod(PixelMKMenu.MODID)
 public class PixelMKMenu {
 
+  /** ModID for the mod. */
+  public static final String MODID = "pixelmkmenu";
+
+  /** Shared logger for the mod. */
+  private static final Logger LOGGER = LogUtils.getLogger();
+
   /** Client Event class. */
   @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-  public static class ClientModEvents {
+  public static final class ClientModEventsUtil {
 
     /** Default Constructor. */
-    ClientModEvents() {}
+    private ClientModEventsUtil() {}
 
     /**
      * Client set-up super function.
@@ -56,22 +62,17 @@ public class PixelMKMenu {
     }
   }
 
-  /** ModID for the mod. */
-  public static final String MODID = "pixelmkmenu";
-
-  /** Shared logger for the mod. */
-  private static final Logger LOGGER = LogUtils.getLogger();
-
   /**
    * Mod Constructor, loaded by NeoForged, first thing that executes when mod is loaded.
    *
    * @param modEventBus event bus instance for the mod
-   * @param modContainer mod container
+   * @param unusedModContainer mod container
    */
-  public PixelMKMenu(IEventBus modEventBus, ModContainer modContainer) {
+  public PixelMKMenu(final IEventBus modEventBus, final ModContainer unusedModContainer) {
     // Do not add this line if there are no @SubscribeEvent-annotated functions in
     // this class, like onServerStarting() below.
     NeoForge.EVENT_BUS.register(this);
+    MenuMusic.SOUND_EVENTS.register(modEventBus);
 
     // Register our mod's ModConfigSpec so that FML can create and load the config
     // file for us

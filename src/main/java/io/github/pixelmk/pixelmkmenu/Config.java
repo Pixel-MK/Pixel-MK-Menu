@@ -36,7 +36,11 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * <p>This is currently just the example config from the MDK repo.
  */
 @EventBusSubscriber(modid = PixelMKMenu.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class Config {
+public final class Config {
+
+  /** Default constructor. */
+  private Config() {}
+
   private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
   private static final ModConfigSpec.BooleanValue LOG_DIRT_BLOCK =
@@ -64,7 +68,7 @@ public class Config {
   private static Set<Item> items;
 
   @SubscribeEvent
-  static void onLoad(final ModConfigEvent event) {
+  /* default */ static void onLoad(final ModConfigEvent event) {
     logDirtBlock = LOG_DIRT_BLOCK.get();
     magicNumber = MAGIC_NUMBER.get();
     magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get();
