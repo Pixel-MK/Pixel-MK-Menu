@@ -58,18 +58,12 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
 
   private int updateCounter;
 
-  @SuppressWarnings("NullAway")
-  private Tooltip brandingsTooltip;
-
-  @SuppressWarnings("NullAway")
-  private TitleScreenMuteButton btnMute;
-
   /**
    * Replaces brandings.
    *
-   * @param fade fade boolean.
+   * @param unusedFade fade boolean.
    */
-  public TitleScreen(boolean fade) {
+  public TitleScreen(boolean unusedFade) {
     this.minecraft = Minecraft.getInstance();
     PixelMKMenuClient.replaceBranding();
   }
@@ -85,7 +79,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     this.renderables.clear();
     this.children().clear();
     this.addDefaultButtons();
-    this.brandingsTooltip =
+    Tooltip brandingsTooltip =
         new Tooltip(
             PixelMKMenuClient.getBrandings(),
             "Minecraft " + SharedConstants.getCurrentVersion().getName(),
@@ -94,7 +88,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
             200,
             0,
             10);
-    this.addRenderableWidget(this.brandingsTooltip);
+    this.addRenderableWidget(brandingsTooltip);
   }
 
   /**
@@ -114,7 +108,8 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
   public void tick() {
     super.tick();
     ++this.updateCounter;
-    if (this.minecraft.screen != null && !this.minecraft.screen.equals(this)) {
+    if (this.minecraft.screen != null // NOPMD - trust screen
+        && !this.minecraft.screen.equals(this)) { // NOPMD - trust screen
       return;
     }
     // this.updateServerInfo();
@@ -132,7 +127,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     if (this.buttonPanelLeft == null) {
       this.buttonPanelLeft =
           new ButtonPanel(
-              ButtonPanel.AnchorType.BottomLeft,
+              ButtonPanel.AnchorType.BOTTOM_LEFT,
               12,
               20,
               150,
@@ -144,7 +139,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
               (button) -> {});
       this.buttonPanelRight =
           new ButtonPanel(
-              ButtonPanel.AnchorType.BottomRight,
+              ButtonPanel.AnchorType.BOTTOM_RIGHT,
               12,
               20,
               150,
@@ -162,7 +157,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     this.addRenderableWidget(this.buttonPanelLeft);
     this.addRenderableWidget(this.buttonPanelRight);
 
-    btnMute = new TitleScreenMuteButton(this.width - 24, 4);
+    TitleScreenMuteButton btnMute = new TitleScreenMuteButton(this.width - 24, 4);
     this.addRenderableWidget(btnMute);
   }
 
@@ -191,7 +186,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
           "menu.multiplayer",
           (button) -> {
             Screen screen =
-                this.minecraft.options.skipMultiplayerWarning
+                this.minecraft.options.skipMultiplayerWarning // NOPMD - trust options
                     ? new JoinMultiplayerScreen(this)
                     : new SafetyScreen(this);
             this.minecraft.setScreen((Screen) screen);

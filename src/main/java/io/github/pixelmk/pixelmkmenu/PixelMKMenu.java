@@ -37,12 +37,18 @@ import sounds.music.MenuMusic;
 @Mod(PixelMKMenu.MODID)
 public class PixelMKMenu {
 
+  /** ModID for the mod. */
+  public static final String MODID = "pixelmkmenu";
+
+  /** Shared logger for the mod. */
+  private static final Logger LOGGER = LogUtils.getLogger();
+
   /** Client Event class. */
   @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-  public static class ClientModEvents {
+  public static final class ClientModEventsUtil {
 
     /** Default Constructor. */
-    ClientModEvents() {}
+    private ClientModEventsUtil() {}
 
     /**
      * Client set-up super function.
@@ -56,19 +62,13 @@ public class PixelMKMenu {
     }
   }
 
-  /** ModID for the mod. */
-  public static final String MODID = "pixelmkmenu";
-
-  /** Shared logger for the mod. */
-  private static final Logger LOGGER = LogUtils.getLogger();
-
   /**
    * Mod Constructor, loaded by NeoForged, first thing that executes when mod is loaded.
    *
    * @param modEventBus event bus instance for the mod
-   * @param modContainer mod container
+   * @param unusedModContainer mod container
    */
-  public PixelMKMenu(IEventBus modEventBus, ModContainer modContainer) {
+  public PixelMKMenu(final IEventBus modEventBus, final ModContainer unusedModContainer) {
     // Do not add this line if there are no @SubscribeEvent-annotated functions in
     // this class, like onServerStarting() below.
     NeoForge.EVENT_BUS.register(this);

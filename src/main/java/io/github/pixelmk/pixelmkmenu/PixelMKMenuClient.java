@@ -32,7 +32,7 @@ import net.neoforged.neoforge.internal.BrandingControl;
 
 /** Main class for client side operations. */
 @OnlyIn(Dist.CLIENT)
-public class PixelMKMenuClient {
+public final class PixelMKMenuClient {
 
   /** Shared mod instance. */
   private static final PixelMKMenuClient INSTANCE = new PixelMKMenuClient();
@@ -66,16 +66,19 @@ public class PixelMKMenuClient {
 
   /** Saves NeoForge branding and replaces with our own. */
   @SuppressWarnings({"unchecked", "PMD.AvoidAccessibilityAlteration"})
-  public static final void replaceBranding() {
-    Field nfBrandingField =
+  public static void replaceBranding() {
+    final Field nfBrandingField =
         ObfuscationReflectionHelper.findField(BrandingControl.class, "brandings");
-    Method brandingMethod =
+    final Method brandingMethod =
         ObfuscationReflectionHelper.findMethod(
             BrandingControl.class, "getBrandings", boolean.class, boolean.class);
-    List<String> emptyList = new ArrayList<>();
+    final List<String> emptyList = new ArrayList<>();
     try {
       if (nfBrandingField == null) {
-        throw new IllegalAccessException("Cannot access field brandings in BrandingControl.class");
+        if (LogUtils.getLogger().isErrorEnabled()) {
+          LogUtils.getLogger().error("Unable to remove and retrieve NF Brandings.");
+        }
+        return;
       }
       nfBrandingField.setAccessible(true);
       if (brandingMethod != null && nfBrandings.isEmpty()) {
@@ -83,8 +86,10 @@ public class PixelMKMenuClient {
       }
       nfBrandingField.set(BrandingControl.class, emptyList);
     } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
-      LogUtils.getLogger().error("Unable to remove and retrieve NF Brandings.");
-      e.printStackTrace();
+      if (LogUtils.getLogger().isErrorEnabled()) {
+        LogUtils.getLogger().error("Unable to remove and retrieve NF Brandings.");
+        LogUtils.getLogger().error(e.getMessage());
+      }
     }
   }
 
@@ -94,6 +99,6 @@ public class PixelMKMenuClient {
    * @return brandings
    */
   public static List<String> getBrandings() {
-    return new ArrayList<String>(nfBrandings);
+    return new ArrayList<>(nfBrandings);
   }
 }

@@ -37,12 +37,11 @@ import org.joml.Matrix4f;
 public class Tooltip extends AbstractWidget {
 
   private static final Minecraft INSTANCE = Minecraft.getInstance();
-  private int textWidth;
   private int tooltipWidth;
   private int tooltipHeight;
   private int verticalOffset;
-  private ArrayList<Component> textArray = new ArrayList<>();
-  private Component tooltipText;
+  private final List<Component> textArray = new ArrayList<>();
+  private final Component tooltipText;
   private int tweak;
 
   /**
@@ -56,19 +55,19 @@ public class Tooltip extends AbstractWidget {
    * @param height height of the tooltip
    * @param verticalOffset vertical offset of the tooltip
    */
+  @SuppressWarnings("PMD.UnusedFormalParameter")
   public Tooltip(
-      List<String> tooltipLines,
-      String textShort,
-      int positionX,
-      int positionY,
-      int width,
-      int height,
-      int verticalOffset) {
+      final List<String> tooltipLines,
+      final String textShort,
+      final int positionX,
+      final int positionY,
+      final int width,
+      final int height,
+      final int verticalOffset) {
     super(positionX, positionY, 0, 0, Component.translatable(textShort));
     this.setMessage(Component.translatable(textShort));
-    this.textWidth = INSTANCE.font.width(this.getMessage().getString());
-    this.width = this.textWidth;
-    this.height = INSTANCE.font.lineHeight;
+    this.width = INSTANCE.font.width(this.getMessage().getString()); // NOPMD - trust font
+    this.height = INSTANCE.font.lineHeight; // NOPMD - trust font
     this.tooltipWidth = 0;
     this.tooltipHeight = height;
     this.verticalOffset = verticalOffset;
@@ -76,8 +75,8 @@ public class Tooltip extends AbstractWidget {
     for (String str : tooltipLines) {
       Component line = Component.translatable(str);
       this.textArray.add(line);
-      if (this.tooltipWidth < INSTANCE.font.width(line) + 18) {
-        this.tooltipWidth = INSTANCE.font.width(line) + 18;
+      if (this.tooltipWidth < INSTANCE.font.width(line) + 18) { // NOPMD - trust font
+        this.tooltipWidth = INSTANCE.font.width(line) + 18; // NOPMD - trust font
       }
     }
   }
@@ -92,14 +91,17 @@ public class Tooltip extends AbstractWidget {
    * @param verticalOffset how far away is the tooltip
    */
   public Tooltip(
-      String tooltipText, String textShort, int positionX, int positionY, int verticalOffset) {
+      final String tooltipText,
+      final String textShort,
+      final int positionX,
+      final int positionY,
+      final int verticalOffset) {
     super(positionX, positionY, 0, 0, Component.translatable(textShort));
     this.setMessage(Component.translatable(textShort));
-    this.textWidth = INSTANCE.font.width(this.getMessage().getString());
-    this.width = this.textWidth;
-    this.height = INSTANCE.font.lineHeight;
-    this.tooltipWidth = INSTANCE.font.width(tooltipText) + 18;
-    this.tooltipHeight = INSTANCE.font.lineHeight + 3;
+    this.width = INSTANCE.font.width(this.getMessage().getString()); // NOPMD - trust font
+    this.height = INSTANCE.font.lineHeight; // NOPMD - trust font
+    this.tooltipWidth = INSTANCE.font.width(tooltipText) + 18; // NOPMD - trust font
+    this.tooltipHeight = INSTANCE.font.lineHeight + 3; // NOPMD - trust font
     this.tooltipText = Component.translatable(tooltipText);
     this.tweak = 0;
     this.verticalOffset = verticalOffset;
@@ -107,34 +109,34 @@ public class Tooltip extends AbstractWidget {
 
   @Override
   protected void renderWidget(
-      @Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+      final @Nonnull GuiGraphics guiGraphics,
+      final int mouseX,
+      final int mouseY,
+      final float partialTick) {
     guiGraphics.drawString(INSTANCE.font, this.getMessage(), this.getX(), this.getY(), 16777215);
-    if (this.isHovered()) {
-      if (!this.tooltipText.getString().equals("")) {
-        drawTooltip(guiGraphics, mouseX, mouseY);
-        guiGraphics.drawString(
-            INSTANCE.font,
-            this.tooltipText,
-            mouseX + 16,
-            mouseY + 2 - this.verticalOffset,
-            16777215);
-      } else {
-        this.tweak = 45;
-        int height = textArray.size() * 8 + 6;
-        this.tooltipHeight = height + 10;
-        this.verticalOffset = 10;
-        drawTooltip(guiGraphics, 80, (this.getY() - 10) - height + 2);
-        int top = (this.getY() + 10) - height - 12;
-        for (Component brand : this.textArray) {
-          guiGraphics.drawString(INSTANCE.font, brand, 100, top - this.verticalOffset, -1);
-          top += 10;
-        }
+    if (!this.isHovered()) {
+      return;
+    }
+    if (!this.tooltipText.getString().isEmpty()) {
+      drawTooltip(guiGraphics, mouseX, mouseY);
+      guiGraphics.drawString(
+          INSTANCE.font, this.tooltipText, mouseX + 16, mouseY + 2 - this.verticalOffset, 16777215);
+    } else {
+      this.tweak = 45;
+      int height = textArray.size() * 8 + 6;
+      this.tooltipHeight = height + 10;
+      this.verticalOffset = 10;
+      drawTooltip(guiGraphics, 80, (this.getY() - 10) - height + 2);
+      int top = (this.getY() + 10) - height - 12;
+      for (Component brand : this.textArray) {
+        guiGraphics.drawString(INSTANCE.font, brand, 100, top - this.verticalOffset, -1);
+        top += 10;
       }
     }
   }
 
   @Override
-  public final void setMessage(@Nonnull Component message) {
+  public final void setMessage(final @Nonnull Component message) {
     super.setMessage(message);
   }
 
@@ -143,7 +145,7 @@ public class Tooltip extends AbstractWidget {
     return super.getMessage();
   }
 
-  private void drawTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+  private void drawTooltip(final GuiGraphics guiGraphics, final int mouseX, final int mouseY) {
     int colour = 1610612736;
     guiGraphics.fill(
         mouseX + 14,
@@ -181,7 +183,8 @@ public class Tooltip extends AbstractWidget {
   }
 
   @Override
-  protected void updateWidgetNarration(@Nonnull NarrationElementOutput narrationElementOutput) {
+  protected void updateWidgetNarration(
+      final @Nonnull NarrationElementOutput narrationElementOutput) {
     this.defaultButtonNarrationText(narrationElementOutput);
   }
 }

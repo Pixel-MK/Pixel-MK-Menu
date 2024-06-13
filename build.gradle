@@ -60,6 +60,7 @@ spotbugs {
 pmd {
     toolVersion = '7.+'
     ignoreFailures = false
+    ruleSets = [ "category/java/errorprone.xml", "category/java/bestpractices.xml", "category/java/performance.xml", "category/java/security.xml", "category/java/design.xml" ]
 }
 
 spotless {

@@ -32,12 +32,12 @@ import net.minecraft.client.renderer.RenderType;
 
 /** Class containing static rendertypes where needed. */
 @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName"})
-public class PixelMKRenderType {
+public final class PixelMKRenderType {
 
   private static final RenderType TOOLTIP;
 
   /** Default Constructor. */
-  PixelMKRenderType() {}
+  private PixelMKRenderType() {}
 
   static {
     TOOLTIP =

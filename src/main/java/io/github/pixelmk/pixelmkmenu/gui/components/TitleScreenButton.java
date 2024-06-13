@@ -35,9 +35,31 @@ import org.joml.Matrix4f;
 /** Button that appears on the Pixel MK title screen. */
 @OnlyIn(Dist.CLIENT)
 public class TitleScreenButton extends Button {
+
+  /** Offset on the vertical. */
+  public final int offsetY;
+
+  /** Is this button aligned to the right of the screen. */
+  public boolean rightAlign;
+
+  /** Message on hover. */
+  private final Component hoverMessage;
+
+  /** Text width. */
+  private final int textWidth;
+
+  /** Previous tick. */
+  private int lastTickNumber;
+
+  /** Previous partial tick. */
+  private float lastPartialTick;
+
+  /** Alpha falloff rate. */
+  private static final float ALPHA_FALLOFF = 0.08f;
+
   /** Button Builder. */
   public static class Builder extends Button.Builder {
-    private boolean rightAlign;
+    private final boolean rightAlign;
 
     Builder(Component message, OnPress onPress) {
       super(message, onPress);
@@ -88,6 +110,7 @@ public class TitleScreenButton extends Button {
    * @param colour colour of the background
    * @param offset how slanted do you want the parallelogram
    */
+  @SuppressWarnings("PMD.AvoidReassigningParameters")
   public static void drawRect(
       GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int colour, int offset) {
     if (x1 < x2) {
@@ -100,9 +123,9 @@ public class TitleScreenButton extends Button {
       y2 = y1 ^ y2;
       y1 = y1 ^ y2;
     }
-    BufferSource bufferSource = guiGraphics.bufferSource();
-    VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.gui());
-    Matrix4f matrix4f = guiGraphics.pose().last().pose();
+    final BufferSource bufferSource = guiGraphics.bufferSource();
+    final VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.gui());
+    final Matrix4f matrix4f = guiGraphics.pose().last().pose();
     vertexConsumer
         .vertex(matrix4f, (float) (x1 + offset), (float) y2, 0.0f)
         .color(colour)
@@ -115,27 +138,6 @@ public class TitleScreenButton extends Button {
     vertexConsumer.vertex(matrix4f, (float) x1, (float) y1, 0.0f).color(colour).endVertex();
   }
 
-  /** Offset on the vertical. */
-  public int offsetY;
-
-  /** Is this button aligned to the right of the screen. */
-  public boolean rightAlign;
-
-  /** Message on hover. */
-  private Component hoverMessage = Component.empty();
-
-  /** Text width. */
-  private int textWidth;
-
-  /** Previous tick. */
-  private int lastTickNumber;
-
-  /** Previous partial tick. */
-  private float lastPartialTick;
-
-  /** Alpha falloff rate. */
-  private float alphaFalloff = 0.08f;
-
   /**
    * Takes in a button builder to build a <code>TitleScreenButton</code>.
    *
@@ -144,9 +146,11 @@ public class TitleScreenButton extends Button {
   protected TitleScreenButton(Builder builder) {
     super(builder);
     this.rightAlign = builder.rightAlign;
-    Minecraft instance = Minecraft.getInstance(); // NOPMD - this is not applicable here
-    this.textWidth = instance.font.width(this.getMessage().getString());
-    alpha = 0.0f;
+    Minecraft instance = Minecraft.getInstance(); // NOPMD - this is not applicable here.
+    this.textWidth = instance.font.width(this.getMessage().getString()); // NOPMD - trust get font.
+    this.hoverMessage = Component.empty();
+    this.alpha = 0.0f;
+    this.offsetY = 0;
   }
 
   public TitleScreenButton(Button button) {
@@ -284,13 +288,13 @@ public class TitleScreenButton extends Button {
     final float mouseOverUpperBound = 0.4f;
     if (mouseOver) {
       if (this.alpha < mouseOverUpperBound) {
-        this.alpha += this.alphaFalloff * deltaTime;
+        this.alpha += ALPHA_FALLOFF * deltaTime;
       }
       if (this.alpha > mouseOverUpperBound) {
         this.alpha = 0.4f;
       }
     } else if (this.alpha > atRestAlpha) {
-      this.alpha -= this.alphaFalloff * deltaTime;
+      this.alpha -= ALPHA_FALLOFF * deltaTime;
     }
     if (this.alpha < atRestAlpha) {
       this.alpha = 0.0f;
