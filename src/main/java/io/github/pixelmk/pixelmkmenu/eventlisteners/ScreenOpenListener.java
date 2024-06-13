@@ -20,6 +20,7 @@
 package io.github.pixelmk.pixelmkmenu.eventlisteners;
 
 import com.mojang.logging.LogUtils;
+import io.github.pixelmk.pixelmkmenu.PixelMKMenu;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.neoforged.api.distmarker.Dist;
@@ -29,7 +30,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 /** Listener for screen open events to hijack the title screen and pause screen. */
-@EventBusSubscriber(modid = "pixelmkmenu")
+@EventBusSubscriber(modid = PixelMKMenu.MODID)
 @OnlyIn(Dist.CLIENT)
 public class ScreenOpenListener {
 

@@ -21,6 +21,7 @@ package io.github.pixelmk.pixelmkmenu.gui.screens;
 
 import io.github.pixelmk.pixelmkmenu.PixelMKMenuClient;
 import io.github.pixelmk.pixelmkmenu.gui.components.ButtonPanel;
+import io.github.pixelmk.pixelmkmenu.gui.components.TitleScreenMuteButton;
 import io.github.pixelmk.pixelmkmenu.gui.components.Tooltip;
 import javax.annotation.Nonnull;
 import net.minecraft.SharedConstants;
@@ -152,8 +153,8 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     this.addRenderableWidget(this.buttonPanelLeft);
     this.addRenderableWidget(this.buttonPanelRight);
 
-    // btnMute = new ButtonMute(this.width - 24, 4);
-    // this.addRenderableWidget(btnMute);
+    TitleScreenMuteButton btnMute = new TitleScreenMuteButton(this.width - 24, 4);
+    this.addRenderableWidget(btnMute);
   }
 
   @SuppressWarnings("null")

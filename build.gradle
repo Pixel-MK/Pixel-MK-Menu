@@ -93,7 +93,7 @@ spotless {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = mod_id + '-' + minecraft_version
 }
 
 // Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
@@ -284,7 +284,12 @@ publishing {
 }
 
 signing {
-    sign publishing.publications.mavenJava
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign jar
+    sign sourcesJar
+    sign javadocJar
 }
 
 jar {
@@ -365,3 +370,5 @@ modrinth {
 
 publish.dependsOn tasks.modrinth
 publish.dependsOn publishCurseForge
+publishCurseForge.dependsOn signJar
+tasks.modrinth.dependsOn signJar
