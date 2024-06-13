@@ -26,11 +26,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-// import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
+import sounds.music.MenuMusic;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 /** Mod Entrypoint. */
@@ -72,6 +72,7 @@ public class PixelMKMenu {
     // Do not add this line if there are no @SubscribeEvent-annotated functions in
     // this class, like onServerStarting() below.
     NeoForge.EVENT_BUS.register(this);
+    MenuMusic.SOUND_EVENTS.register(modEventBus);
 
     // Register our mod's ModConfigSpec so that FML can create and load the config
     // file for us

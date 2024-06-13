@@ -34,11 +34,13 @@ import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.sounds.Music;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.gui.ModListScreen;
+import sounds.music.MenuMusic;
 
 /**
  * Pixel MK Menu Title Screen.
@@ -58,6 +60,9 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
 
   @SuppressWarnings("NullAway")
   private Tooltip brandingsTooltip;
+
+  @SuppressWarnings("NullAway")
+  private TitleScreenMuteButton btnMute;
 
   /**
    * Replaces brandings.
@@ -104,17 +109,21 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
   }
 
   /** On every tick update the counter, update server info and tick the music manager. */
+  @SuppressWarnings("null")
   @Override
   public void tick() {
     super.tick();
     ++this.updateCounter;
-    if (this.minecraft != null
-        && this.minecraft.screen != null
-        && !this.minecraft.screen.equals(this)) {
+    if (this.minecraft.screen != null && !this.minecraft.screen.equals(this)) {
       return;
     }
     // this.updateServerInfo();
     // if (this.serverPinger != null) this.serverPinger.tick();
+  }
+
+  @Override
+  public Music getBackgroundMusic() {
+    return new Music(MenuMusic.MENU_MUSIC.getDelegate(), 20, 600, true);
   }
 
   /** Adds the button panels, initialises them and adds the mute button. */
@@ -153,7 +162,7 @@ public class TitleScreen extends net.minecraft.client.gui.screens.TitleScreen {
     this.addRenderableWidget(this.buttonPanelLeft);
     this.addRenderableWidget(this.buttonPanelRight);
 
-    TitleScreenMuteButton btnMute = new TitleScreenMuteButton(this.width - 24, 4);
+    btnMute = new TitleScreenMuteButton(this.width - 24, 4);
     this.addRenderableWidget(btnMute);
   }
 
