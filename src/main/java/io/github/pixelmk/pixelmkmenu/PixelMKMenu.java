@@ -20,8 +20,7 @@
 package io.github.pixelmk.pixelmkmenu;
 
 import com.mojang.logging.LogUtils;
-
-import io.github.pixelmk.pixelmkmenu.music.MenuMusic;
+import io.github.pixelmk.pixelmkmenu.sounds.music.MenuMusic;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;

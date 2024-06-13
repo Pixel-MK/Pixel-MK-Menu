@@ -23,7 +23,7 @@ import io.github.pixelmk.pixelmkmenu.PixelMKMenuClient;
 import io.github.pixelmk.pixelmkmenu.gui.components.ButtonPanel;
 import io.github.pixelmk.pixelmkmenu.gui.components.TitleScreenMuteButton;
 import io.github.pixelmk.pixelmkmenu.gui.components.Tooltip;
-import io.github.pixelmk.pixelmkmenu.music.MenuMusic;
+import io.github.pixelmk.pixelmkmenu.sounds.music.MenuMusic;
 import javax.annotation.Nonnull;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
