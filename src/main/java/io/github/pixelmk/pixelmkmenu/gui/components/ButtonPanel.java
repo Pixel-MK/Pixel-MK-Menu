@@ -142,6 +142,16 @@ public class ButtonPanel extends Button {
     return button;
   }
 
+  /**
+   * Adds a button to the panel using <code>displayText</code> and <code>ActionInstance</code>.
+   *
+   * @param button button to add
+   */
+  public void addButton(TitleScreenButton button) {
+    this.buttons.add(button);
+    updateButtonPositions();
+  }
+
   /** Updates the position of the buttons. */
   private void updateButtonPositions() {
     if (this.anchorType == AnchorType.TopLeft || this.anchorType == AnchorType.BottomLeft) {

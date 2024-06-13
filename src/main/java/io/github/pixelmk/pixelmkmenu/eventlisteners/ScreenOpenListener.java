@@ -19,7 +19,6 @@
 
 package io.github.pixelmk.pixelmkmenu.eventlisteners;
 
-import com.mojang.logging.LogUtils;
 import io.github.pixelmk.pixelmkmenu.PixelMKMenu;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -63,7 +62,7 @@ public class ScreenOpenListener {
   @SubscribeEvent
   public static void onPauseScreenOpen(ScreenEvent.Opening event) {
     if (event.getNewScreen() instanceof PauseScreen) {
-      LogUtils.getLogger().info("Pause Screen Opened");
+      event.setNewScreen(new io.github.pixelmk.pixelmkmenu.gui.screens.PauseScreen());
     }
   }
 }

@@ -149,6 +149,10 @@ public class TitleScreenButton extends Button {
     alpha = 0.0f;
   }
 
+  public TitleScreenButton(Button button) {
+    this(builder(button.getMessage(), button.onPress));
+  }
+
   /**
    * Wrapper to configure params passed to <code>drawRect</code>.
    *

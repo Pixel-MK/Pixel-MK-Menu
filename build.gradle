@@ -101,7 +101,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 java.withSourcesJar()
 java.withJavadocJar()
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 //minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
 
 // Default run configurations.
