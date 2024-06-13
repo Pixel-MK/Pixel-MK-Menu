@@ -353,7 +353,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 
     // Add JavaDoc Jar to upload
     mainFile.withAdditionalFile(javadocJar)
-    debugMode = true
+    // debugMode = true
 }
 
 modrinth {
@@ -366,7 +366,7 @@ modrinth {
     loaders = ["neoforge"]
     additionalFiles = [sourcesJar, javadocJar]
     changelog = findProperty('changelog')
-    debugMode = true
+    // debugMode = true
 }
 
 publish.dependsOn tasks.modrinth
