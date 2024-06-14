@@ -340,7 +340,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     // return a UploadArtifact object that can be used to further configure the
     // file.
     def mainFile = upload(projectId, jar)
-    mainFile.changelog = findProperty('changelog')
+    mainFile.changelog = rootProject.file('changelog.md').text
     mainFile.releaseType = findProperty('mod_release_type')
     mainFile.changelogType = 'markdown'
     mainFile.addModLoader('neoforge')
@@ -353,7 +353,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
 
     // Add JavaDoc Jar to upload
     mainFile.withAdditionalFile(javadocJar)
-    // debugMode = true
+    debugMode = true
 }
 
 modrinth {
@@ -365,8 +365,8 @@ modrinth {
     gameVersions = [findProperty('minecraft_version')]
     loaders = ["neoforge"]
     additionalFiles = [sourcesJar, javadocJar]
-    changelog = findProperty('changelog')
-    // debugMode = true
+    changelog = rootProject.file('changelog.md').text
+    debugMode = true
 }
 
 publish.dependsOn tasks.modrinth
