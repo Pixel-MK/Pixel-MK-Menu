@@ -43,5 +43,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          body_path: ./changelog.md
           files: |
             ./repo/io/github/pixel-mk/pixelmkmenu-${{ env.MINECRAFT_VER }}/${{ github.ref_name }}/pixelmkmenu-${{ env.MINECRAFT_VER }}-${{ github.ref_name }}*.jar
